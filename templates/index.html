@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+
+<title>HDIM App</title>
+
+<!-- Dropzonejs -->
+<link href="../static/dropzone/dist/min/basic.min.css" type="text/css" rel="stylesheet" />
+<link href="../static/dropzone/dist/min/dropzone.min.css" type="text/css" rel="stylesheet" />
+<script src="../static/dropzone/dist/min/dropzone.min.js"></script>>
+
+<!-- D3 -->
+<script src="//d3js.org/d3.v3.min.js"></script>
+
+<!-- Left Menu Layout -->
+<link rel="stylesheet" type="text/css" href="../static/screen/screen.css" media="screen" />
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+
+<!-- Bootstrap Glyphicons -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
+
+<!-- Accordions -->
+<link rel="stylesheet" type="text/css" href="../static/accordion/accordion.css">
+
+<!-- E-Mail Form -->
+<link rel="stylesheet" type="text/css" href="../static/text_input/text_input.css">
+
+<!-- Fancy Buttons -->
+<link rel="stylesheet" type="text/css" href="../static/fancy_buttons/fancy_buttons.css">
+
+<!-- Bar Chart -->
+<link rel="stylesheet" type="text/css" href="../static/barchart/barchart.css">
+
+<style>
+#left_hand {width: 200px;
+            float: left;
+            }
+
+#main_content {margin: 0 0 0 200px; /* adjust for a gutter between divs */ }
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({
+        placement : 'right'
+    });
+});
+</script>
+
+</head>
+
+<body>
+
+<div class="colmask leftmenu">
+	<div class="colleft">
+		<div class="col1">
+			<!-- Column 1 start -->
+      <div class="boxes">
+        <input type="checkbox" id="box-sort">
+        <label for="box-sort">Sort Values</label>
+      </div>
+			<!-- Column 1 end -->
+		</div>
+		<div class="col2">
+			<!-- Column 2 start -->
+      <div id="left hand">
+        <button class="accordion">File Upload</button>
+          <div class="panel">
+            <form action="upload" class="dropzone" id="data-submission", enctype= multipart/form-data></form>
+          </div>
+
+      <button class="accordion">Regression Methods</button>
+        <div class="panel">
+          <!-- <form action="">
+            <input type="radio" name="regression" value="LassoAV"> LassoAV <br>
+            <input type="radio" name="regression" value="LassoCV"> LassoCV <br>
+            <input type="radio" name="regression" value="FOS"> FOS
+          </form> -->
+          <div class="container">
+            <ul>
+            <li>
+              <input type="radio" id="f-option" name="selector">
+              <label for="f-option">Pizza</label>
+
+              <div class="check"></div>
+            </li>
+
+            <li>
+              <input type="radio" id="s-option" name="selector">
+              <label for="s-option">Bacon</label>
+
+              <div class="check"><div class="inside"></div></div>
+            </li>
+
+            <li>
+              <input type="radio" id="t-option" name="selector">
+              <label for="t-option">Cats</label>
+
+              <div class="check"><div class="inside"></div></div>
+            </li>
+          </ul>
+          </div>
+        </div>
+
+        <button class="accordion">Summary</button>
+          <div class="panel">
+            Summary Input
+            <a href="#"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-original-title="Summary of the uploaded data set."></span></a>
+          </div>
+
+          <button class="accordion">Bar Chart Settings</button>
+            <div class="panel">
+              <div>
+                <!-- <label><input type="checkbox" name="showIntercept" value="value">Show Intercept</label> -->
+                <div class="boxes">
+                  <input type="checkbox" id="box-1">
+                  <label for="box-1">Show Intercept</label>
+                </div>
+              </div>
+              <div>
+                Positive value color
+              </div>
+                <select name="positiveValColor">
+                  <option value="Red">Red</option>
+                  <option value="Blue">Blue</option>
+                </select>
+              <div>
+                Negative value color
+              </div>
+              <div>
+                <select name="negativeValColor">
+                  <option value="Red">Red</option>
+                  <option value="Blue">Blue</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="accordion">PDF Report Request</button>
+              <div class="panel">
+
+                  <div class="group">
+                    <input type="text" id="name" required="required"/>
+                    <label for="name">Name</label>
+                    <div class="bar"></div>
+                  </div>
+
+                  <div class="group">
+                    <input type="text" id="email" required="required"/>
+                    <label for="email">E-Mail</label>
+                    <div class="bar"></div>
+                  </div>
+
+              </div>
+      </div>
+			<!-- Column 2 end -->
+		</div>
+	</div>
+</div>
+<div id="footer">
+  <p>In affliation with the University of Washington</p>
+</div>
+
+<!-- Process accordion events -->
+<script src="../static/accordion/accordion.js"></script>
+
+<!-- Rendee barchart and add to particular div-->
+<script src="../static/barchart/barchart.js"></script>
+
+<script>
+
+var populated = false;
+
+Dropzone.options.dataSubmission = {
+
+  maxFilesize: 20, // Size in MB
+  maxFiles: 1,
+
+  maxfilesexceeded: function(file) {
+    this.removeAllFiles();
+    this.addFile(file);
+  },
+  success: function(file, response) {
+
+    populated ? updateChart( response ): buildChart( response );
+    populated = true;
+    // alert( JSON.stringify(response) );
+  }
+};
+
+</script>
+
+</body>
+</html>
