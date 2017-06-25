@@ -169,8 +169,8 @@ function change() {
       .delay(delay)
       .attr("y", function(d) { return x0(d.Name); });
 
-  transition.select(".x.axis")
-      .call(xAxis)
+  transition.select(".y.axis")
+      .call(yAxis)
     .selectAll("g")
       .delay(delay);
 
