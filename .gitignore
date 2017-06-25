@@ -76,3 +76,6 @@ doxygen/
 
 # Generated Python Wrapper files
 __pycache__
+
+# Log Files
+/logs

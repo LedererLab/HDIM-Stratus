@@ -11,7 +11,6 @@ spec.loader.exec_module( hdim )
 def WebFOS( file_contents ):
 
     raw_data = pd.read_csv( BytesIO( file_contents ) )
-    # raw_data = np.genfromtxt( BytesIO( file_contents ), dtype=float, delimiter=',', names=True )
 
     Y = raw_data.ix[:,0]
     X = raw_data.ix[:, raw_data.columns != 0 ]
@@ -30,9 +29,6 @@ def WebFOS( file_contents ):
     coefficients = fos.ReturnCoefficients()
     intercept = fos.ReturnIntercept()
     support = fos.ReturnSupport()
-
-    # coefficients = np.insert( coefficients, 0, intercept )
-    # col_names.insert( 0, "Intercept" )
 
     nz_indices = coefficients.nonzero()[0]
     support_coefs = coefficients[ nz_indices ]

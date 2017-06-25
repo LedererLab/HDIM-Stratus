@@ -20,21 +20,14 @@
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-<!-- Bootstrap -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
-
-<!-- Bootstrap Glyphicons -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
 
 <!-- Accordions -->
 <link rel="stylesheet" type="text/css" href="../static/accordion/accordion.css">
 
-<!-- E-Mail Form -->
-<link rel="stylesheet" type="text/css" href="../static/text_input/text_input.css">
-
-<!-- Fancy Buttons -->
-<link rel="stylesheet" type="text/css" href="../static/fancy_buttons/fancy_buttons.css">
+<!-- Material Design Lite -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
 <!-- Bar Chart -->
 <link rel="stylesheet" type="text/css" href="../static/barchart/barchart.css">
@@ -46,14 +39,6 @@
 
 #main_content {margin: 0 0 0 200px; /* adjust for a gutter between divs */ }
 </style>
-
-<script type="text/javascript">
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip({
-        placement : 'right'
-    });
-});
-</script>
 
 </head>
 
@@ -79,84 +64,94 @@ $(document).ready(function(){
 
       <button class="accordion">Regression Methods</button>
         <div class="panel">
-          <!-- <form action="">
-            <input type="radio" name="regression" value="LassoAV"> LassoAV <br>
-            <input type="radio" name="regression" value="LassoCV"> LassoCV <br>
-            <input type="radio" name="regression" value="FOS"> FOS
-          </form> -->
-          <div class="container">
-            <ul>
-            <li>
-              <input type="radio" id="f-option" name="selector">
-              <label for="f-option">Pizza</label>
 
-              <div class="check"></div>
-            </li>
-
-            <li>
-              <input type="radio" id="s-option" name="selector">
-              <label for="s-option">Bacon</label>
-
-              <div class="check"><div class="inside"></div></div>
-            </li>
-
-            <li>
-              <input type="radio" id="t-option" name="selector">
-              <label for="t-option">Cats</label>
-
-              <div class="check"><div class="inside"></div></div>
-            </li>
-          </ul>
+          <div>
+            <label class="mdl-radio mdl-js-radio" for="lasso_av">
+               <input type="radio" id="lasso_av" name="regression" class="mdl-radio__button" checked>
+               <span class="mdl-radio__label">LassoAV</span>
+               <div id="lassoav_tt" class="icon material-icons">ic_help</div>
+               <div class="mdl-tooltip" data-mdl-for="lassoav_tt">
+                 Adaptive validation for the LASSO via glmnet.
+               </div>
+            </label>
           </div>
+
+          <div>
+            <label class="mdl-radio mdl-js-radio" for="lasso_cv">
+               <input type="radio" id="lasso_cv" name="regression" class="mdl-radio__button" checked>
+               <span class="mdl-radio__label">LassoCV</span>
+               <div id="lassocv_tt" class="icon material-icons">ic_help</div>
+               <div class="mdl-tooltip" data-mdl-for="lassocv_tt">
+                 Cross validation for the LASSO using cv.glmnet.
+               </div>
+            </label>
+          </div>
+
+          <div>
+            <label class="mdl-radio mdl-js-radio" for="fos">
+               <input type="radio" id="fos" name="regression" class="mdl-radio__button" checked>
+               <span class="mdl-radio__label">FOS</span>
+               <div id="fos_tt" class="icon material-icons">ic_help</div>
+               <div class="mdl-tooltip" data-mdl-for="fos_tt">
+                 Fast and Optimial Support algorithm for the LASSO.
+               </div>
+            </label>
+          </div>
+
         </div>
 
         <button class="accordion">Summary</button>
           <div class="panel">
             Summary Input
-            <a href="#"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-original-title="Summary of the uploaded data set."></span></a>
+            <div id="tt1" class="icon material-icons">ic_help</div>
+            <div class="mdl-tooltip" data-mdl-for="tt1">
+              Description of Summary Report Parameter.
+            </div>
           </div>
 
           <button class="accordion">Bar Chart Settings</button>
             <div class="panel">
               <div>
-                <!-- <label><input type="checkbox" name="showIntercept" value="value">Show Intercept</label> -->
-                <div class="boxes">
-                  <input type="checkbox" id="box-1">
-                  <label for="box-1">Show Intercept</label>
-                </div>
+                <label class="mdl-checkbox mdl-js-checkbox" for="show_intercept">
+                   <input type="checkbox" id="show_intercept" class="mdl-checkbox__input" checked>
+                   <span class="mdl-checkbox__label">Show Intercept</span>
+                   <div id="show_int_tt" class="icon material-icons">ic_help</div>
+                   <div class="mdl-tooltip" data-mdl-for="show_int_tt">
+                     Show or hide the intercept term on the bar chart.
+                   </div>
+                </label>
               </div>
-              <div>
-                Positive value color
-              </div>
-                <select name="positiveValColor">
-                  <option value="Red">Red</option>
-                  <option value="Blue">Blue</option>
-                </select>
-              <div>
-                Negative value color
-              </div>
-              <div>
-                <select name="negativeValColor">
-                  <option value="Red">Red</option>
-                  <option value="Blue">Blue</option>
-                </select>
-              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fullwidth">
+                   <input class="mdl-textfield__input" type="text" id="pos_val_color" value="Red" readonly tabIndex="-1">
+                   <label for="sample1" class="mdl-textfield__label">Positive Values Color</label>
+                   <ul for="pos_val_color" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                       <li class="mdl-menu__item">Red</li>
+                       <li class="mdl-menu__item">Blue</li>
+                   </ul>
+               </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fullwidth">
+                     <input class="mdl-textfield__input" type="text" id="neg_val_color" value="Red" readonly tabIndex="-1">
+                     <label for="sample1" class="mdl-textfield__label">Negative Values Color</label>
+                     <ul for="neg_val_color" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                         <li class="mdl-menu__item">Red</li>
+                         <li class="mdl-menu__item">Blue</li>
+                     </ul>
+                 </div>
             </div>
 
             <button class="accordion">PDF Report Request</button>
               <div class="panel">
 
-                  <div class="group">
-                    <input type="text" id="name" required="required"/>
-                    <label for="name">Name</label>
-                    <div class="bar"></div>
+                <form action="#">
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="text" id="name_form">
+                    <label class="mdl-textfield__label" for="name_form">Name...</label>
                   </div>
-
-                  <div class="group">
-                    <input type="text" id="email" required="required"/>
-                    <label for="email">E-Mail</label>
-                    <div class="bar"></div>
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="text" id="email_form">
+                    <label class="mdl-textfield__label" for="email_form">E-Mail...</label>
                   </div>
+                </form>
 
               </div>
       </div>
