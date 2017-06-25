@@ -8,8 +8,11 @@ var svg = d3.select("div.col1").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var chart_data;
 
 function buildChart( data ) {
+
+  chart_data = data;
 
   data.forEach(function(d) {
       d.Name = d.Name;
@@ -57,6 +60,8 @@ function buildChart( data ) {
 }
 
 function updateChart( data ) {
+
+  chart_data = data;
 
   data.forEach(function(d) {
       d.Name = d.Name;
@@ -125,38 +130,48 @@ function updateChart( data ) {
 
 }
 
-// function update(data) {
-//   var t = d3.transition()
-//       .duration(750);
-//
-//   // JOIN new data with old elements.
-//   var text = g.selectAll("text")
-//     .data(data, function(d) { return d; });
-//
-//   // EXIT old elements not present in new data.
-//   text.exit()
-//       .attr("class", "exit")
-//     .transition(t)
-//       .attr("y", 60)
-//       .style("fill-opacity", 1e-6)
-//       .remove();
-//
-//   // UPDATE old elements present in new data.
-//   text.attr("class", "update")
-//       .attr("y", 0)
-//       .style("fill-opacity", 1)
-//     .transition(t)
-//       .attr("x", function(d, i) { return i * 32; });
-//
-//   // ENTER new elements present in new data.
-//   text.enter().append("text")
-//       .attr("class", "enter")
-//       .attr("dy", ".35em")
-//       .attr("y", -60)
-//       .attr("x", function(d, i) { return i * 32; })
-//       .style("fill-opacity", 1e-6)
-//       .text(function(d) { return d; })
-//     .transition(t)
-//       .attr("y", 0)
-//       .style("fill-opacity", 1);
-// }
+d3.select("input").on("change", change);
+
+function change() {
+
+  var x = d3.scale.linear()
+      .range([0, width]);
+
+  var y = d3.scale.ordinal()
+      .rangeRoundBands([0, height], 0.1);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .tickSize(0)
+      .tickPadding(6);
+
+  var c = document.getElementById('box-sort');
+
+  // Copy-on-write since tweens are evaluated after a delay.
+  var x0 = y.domain( chart_data.sort( c.checked
+      ? function(a, b) { return b.Val - a.Val; }
+      : function(a, b) { return d3.ascending(a.Name, b.Name); })
+      .map(function(d) { return d.Name; }))
+      .copy();
+
+  svg.selectAll(".bar")
+      .sort(function(a, b) { return x0(a.Name) - x0(b.Name); });
+
+  var transition = svg.transition().duration(750),
+      delay = function(d, i) { return i * 50; };
+
+  transition.selectAll(".bar")
+      .delay(delay)
+      .attr("y", function(d) { return x0(d.Name); });
+
+  transition.select(".x.axis")
+      .call(xAxis)
+    .selectAll("g")
+      .delay(delay);
+
+}
