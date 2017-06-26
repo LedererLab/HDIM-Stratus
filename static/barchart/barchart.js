@@ -19,6 +19,10 @@ function buildChart( data ) {
       d.Val = +d.Val;
   });
 
+  var t = d3.transition()
+    .delay(500)
+    .duration(2500)
+
   var x = d3.scale.linear()
       .range([0, width]);
 
@@ -38,13 +42,16 @@ function buildChart( data ) {
   x.domain(d3.extent(data, function(d) { return d.Val; })).nice();
   y.domain(data.map(function(d) { return d.Name; }));
 
-  svg.selectAll(".bar")
-    .data(data)
-    .enter().append("rect")
-    .attr("class", function(d) { return "bar bar--" + (d.Val < 0 ? "negative" : "positive"); })
+  var bars = svg.selectAll(".bar")
+    .data( data );
+
+  bars.enter().append("rect")
+    .transition(t)
+    .attr("class", "bar")
     .attr("x", function(d) { return x(Math.min(0, d.Val)); })
     .attr("y", function(d) { return y(d.Name); })
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
+    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
     .attr("height", y.rangeBand());
 
   svg.append("g")
@@ -59,9 +66,14 @@ function buildChart( data ) {
 
 }
 
-function updateChart( data ) {
+function colorChart( pos_color, neg_color ) {
 
-  chart_data = data;
+  svg.selectAll(".bar")
+    .attr("fill", function(d){ return ( d.Val > 0)?( pos_color ):( neg_color ); })
+
+}
+
+function updateChart( data ) {
 
   data.forEach(function(d) {
       d.Name = d.Name;
@@ -92,31 +104,46 @@ function updateChart( data ) {
 
   // JOIN new data with old elements.
   var bars = svg.selectAll(".bar")
-    .data(data, function(d) { return d; });
-
-  // UPDATE old elements present in new data.
-  bars.attr("class", "update")
-    .transition(t)
-    .attr("x", function(d) { return x(Math.min(0, d.Val)); })
-    .attr("y", function(d) { return y(d.Name); })
-    .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
-    .attr("height", y.rangeBand());
+    .data( data );
 
   // EXIT old elements not present in new data.
   bars.exit()
-      .attr("class", "exit")
-      .remove();
+    .attr("class", "bar")
+    .transition()
+    .duration(300)
+    .ease("exp")
+    .attr("width", 0)
+    .remove();
 
-  // ENTER new elements present in new data.
-  svg.selectAll(".bar")
-    .data(data)
-    .enter().append("rect")
+  // UPDATE old elements present in new data.s
+  bars
+    .attr("class","bar")
     .transition(t)
-    .attr("class", function(d) { return "bar bar--" + (d.Val < 0 ? "negative" : "positive"); })
     .attr("x", function(d) { return x(Math.min(0, d.Val)); })
     .attr("y", function(d) { return y(d.Name); })
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
+    .attr("height", y.rangeBand())
+    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); });
+
+  // ENTER new elements present in new data.
+  bars.enter().append("rect")
+    .attr("class", "bar")
+    .attr("y", function(d) { return y(d.Name); })
+    .attr("x", function(d) { return x(Math.min(0, d.Val)); })
+    .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
+    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
     .attr("height", y.rangeBand());
+
+  // svg.selectAll(".bar")
+  //   .data(data)
+  //   .enter().append("rect")
+  //   .transition(t)
+  //   .attr("class", "bar")
+  //   .attr("x", function(d) { return x(Math.min(0, d.Val)); })
+  //   .attr("y", function(d) { return y(d.Name); })
+  //   .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
+  //   .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
+  //   .attr("height", y.rangeBand());
 
   svg.selectAll(".y.axis")
     .transition(t)
@@ -127,6 +154,8 @@ function updateChart( data ) {
     .transition(t)
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
+
+    chart_data = data;
 
 }
 
