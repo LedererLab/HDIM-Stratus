@@ -42,16 +42,22 @@ function buildChart( data ) {
   x.domain(d3.extent(data, function(d) { return d.Val; })).nice();
   y.domain(data.map(function(d) { return d.Name; }));
 
+  var max_x = d3.max(data, function(d) { return +d.Val;} );
+
   var bars = svg.selectAll(".bar")
     .data( data );
 
   bars.enter().append("rect")
-    .transition(t)
+    .attr("class","bar")
+    .attr("x", function(d) { return ( d.Val > 0)?( x(Math.min(0, d.Val) + 0.1*max_x) ):( x(Math.min(0, d.Val) - 0.1*max_x) ); })
+    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
+    .transition()
+    .duration(1000)
+    .ease( 'bounce' )
     .attr("class", "bar")
     .attr("x", function(d) { return x(Math.min(0, d.Val)); })
     .attr("y", function(d) { return y(d.Name); })
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
-    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
     .attr("height", y.rangeBand());
 
   svg.append("g")
@@ -125,25 +131,21 @@ function updateChart( data ) {
     .attr("height", y.rangeBand())
     .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); });
 
+  var max_x = d3.max(data, function(d) { return +d.Val;} );
+
   // ENTER new elements present in new data.
   bars.enter().append("rect")
-    .attr("class", "bar")
+    .attr("class","bar")
+    .attr("x", function(d) { return ( d.Val > 0)?( x(Math.min(0, d.Val) + 0.1*max_x) ):( x(Math.min(0, d.Val) - 0.1*max_x) ); })
+    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
+    .transition()
+    .duration(1000)
+    .ease( 'bounce' )
     .attr("y", function(d) { return y(d.Name); })
     .attr("x", function(d) { return x(Math.min(0, d.Val)); })
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
     .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
     .attr("height", y.rangeBand());
-
-  // svg.selectAll(".bar")
-  //   .data(data)
-  //   .enter().append("rect")
-  //   .transition(t)
-  //   .attr("class", "bar")
-  //   .attr("x", function(d) { return x(Math.min(0, d.Val)); })
-  //   .attr("y", function(d) { return y(d.Name); })
-  //   .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
-  //   .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
-  //   .attr("height", y.rangeBand());
 
   svg.selectAll(".y.axis")
     .transition(t)
