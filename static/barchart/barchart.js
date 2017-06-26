@@ -60,6 +60,19 @@ function buildChart( data ) {
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
     .attr("height", y.rangeBand());
 
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return "<strong>" + d.Name + ":</strong> <span style='color:red'>" + d.Val + "</span>";
+    })
+
+  svg.call(tip);
+
+  bars
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);
+
   svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
