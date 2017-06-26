@@ -1,5 +1,5 @@
 .axis text {
-  font: 10px sans-serif;
+  font: 10px Roboto;
 }
 
 .axis path,
@@ -11,6 +11,15 @@
 
 .x.axis path {
   display: none;
+}
+
+.grid .tick {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+.grid path {
+    stroke-width: 2;
 }
 
 .bar:hover {

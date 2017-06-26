@@ -42,6 +42,23 @@ function buildChart( data ) {
   x.domain(d3.extent(data, function(d) { return d.Val; })).nice();
   y.domain(data.map(function(d) { return d.Name; }));
 
+    // function for the x grid lines
+  function make_x_axis() {
+      return d3.svg.axis()
+          .scale(x)
+          .orient("bottom")
+          .ticks(5)
+  }
+
+    // Draw the x Grid lines
+  svg.append("g")
+    .attr("class", "grid")
+    .attr("transform", "translate(0," + height + ")")
+    .call(make_x_axis()
+        .tickSize(-height, 0, 0)
+        .tickFormat("")
+    )
+
   var max_x = d3.max(data, function(d) { return +d.Val;} );
 
   var bars = svg.selectAll(".bar")
@@ -117,6 +134,24 @@ function updateChart( data ) {
 
   x.domain(d3.extent(data, function(d) { return d.Val; })).nice();
   y.domain(data.map(function(d) { return d.Name; }));
+
+  // function for the x grid lines
+function make_x_axis() {
+    return d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(5)
+}
+
+  // Draw the x Grid lines
+svg.selectAll(".grid")
+  // .attr("class", "grid")
+  .transition(t)
+  .attr("transform", "translate(0," + height + ")")
+  .call(make_x_axis()
+      .tickSize(-height, 0, 0)
+      .tickFormat("")
+  )
 
   var t = d3.transition()
       .duration(750)

@@ -39,12 +39,6 @@ def WebFOS( file_contents ):
 
     return( pd.DataFrame( data = support_coefs , index = col_names ).to_json(orient='columns') )
 
-def LassoCV( file_contents ):
-    #
-
-def LassoAV( file_contents ):
-    # 
-
 def formatForD3( pandas_json ):
     json_data = json.loads( pandas_json )['0']
 
