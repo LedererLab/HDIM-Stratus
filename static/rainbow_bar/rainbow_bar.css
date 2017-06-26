@@ -1,0 +1,59 @@
+ul.tile_ul {
+  float:left;
+  list-style-type: none;
+  padding: 0;
+  padding: none;
+  display: flex;
+  background:rgba(0,0,0,0.1);
+  font: 10px Roboto;
+}
+
+button.rainbow_bar {
+  width: 30px;
+  height: 30px;
+  color: white;
+  opacity: 0.5;
+  border: none;
+  display: inline-block;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+}
+
+button.rainbow_bar:hover {
+  position: relative;
+  opacity: 1;
+  top:-5px;
+  box-shadow: 5px 5px 5px #888888;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.tile_ul_red{
+    background-color:red;
+}
+
+.tile_ul_orange{
+    background-color:orange;
+}
+
+.tile_ul_yellow{
+    background-color:yellow;
+}
+
+.tile_ul_green{
+    background-color:green;
+}
+
+.tile_ul_blue{
+    background-color:blue;
+}
+
+.tile_ul_purple{
+    background-color:purple;
+}

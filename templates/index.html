@@ -24,6 +24,10 @@
 <!-- Accordions -->
 <link rel="stylesheet" type="text/css" href="../static/accordion/accordion.css">
 
+<!-- Color Select -->
+<link rel="stylesheet" type="text/css" href="../static/rainbow_bar/rainbow_bar.css">
+
+
 <!-- Material Design Lite -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-amber.min.css" />
@@ -52,15 +56,6 @@
         <input type="checkbox" id="box-sort">
         <label for="box-sort">Sort Values</label>
       </div>
-
-      <!-- <label class="mdl-checkbox mdl-js-checkbox" for="sort_vals">
-         <input type="checkbox" id="sort_vals" class="mdl-checkbox__input" checked>
-         <span class="mdl-checkbox__label">Sort Values</span>
-         <div id="sort_vals_tt" class="icon material-icons">ic_help</div>
-         <div class="mdl-tooltip" data-mdl-for="sort_vals_tt">
-           Sort the values displayed on the bar chart.
-         </div>
-      </label> -->
 
 			<!-- Column 1 end -->
 		</div>
@@ -131,28 +126,33 @@
                    </div>
                 </label>
               </div>
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fullwidth">
-                   <input class="mdl-textfield__input" type="text" id="pos_val_color" value="Red" readonly tabIndex="-1">
-                   <label for="sample1" class="mdl-textfield__label">Positive Values Color</label>
-                   <ul for="pos_val_color" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
-                       <li class="mdl-menu__item">Red</li>
-                       <li class="mdl-menu__item">Blue</li>
-                   </ul>
-               </div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fullwidth">
-                     <input class="mdl-textfield__input" type="text" id="neg_val_color" value="Red" readonly tabIndex="-1">
-                     <label for="sample1" class="mdl-textfield__label">Negative Values Color</label>
-                     <ul for="neg_val_color" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
-                         <li class="mdl-menu__item">Red</li>
-                         <li class="mdl-menu__item">Blue</li>
-                     </ul>
-                 </div>
+              <div>
+                Positive Value Color
+                <div id="pos_val_tt" class="icon material-icons">ic_help</div>
+                   <div class="mdl-tooltip" data-mdl-for="pos_val_tt">
+                     Color of positive values on bar chart.
+                   </div>
+                <ul class = "tile_ul">
+                  <button type="button" class = "rainbow_bar tile_ul_red">
+                  </button>
+                  <button type="button" class = "rainbow_bar tile_ul_orange">
+                  </button>
+                  <button type="button" class = "rainbow_bar tile_ul_yellow">
+                  </button>
+                  <button type="button" class = "rainbow_bar tile_ul_green">
+                  </button>
+                  <button type="button" class = "rainbow_bar tile_ul_blue">
+                  </button>
+                  <button type="button" class = "rainbow_bar tile_ul_purple">
+                  </button>
+                </ul>
+              </div>
             </div>
 
             <button class="accordion">Download Results</button>
               <div class="panel">
 
-                <div class = "btn-group">
+                <div class = "mdl-button-group">
 
                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                   Download Graph
