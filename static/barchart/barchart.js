@@ -13,12 +13,12 @@ var posColor = 'orange';
 var negColor = 'blue';
 
 function setPosColor( pos_color ) {
-  posColor = pos_color;
+  posColor = d3.rgb(pos_color);
   colorVals()
 }
 
 function setNegColor( neg_color ) {
-  negColor = neg_color;
+  negColor = d3.rgb(neg_color);
   colorVals()
 }
 

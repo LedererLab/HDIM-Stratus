@@ -1,8 +1,7 @@
 ul.tile_ul {
   float:left;
   list-style-type: none;
-  padding: 0;
-  padding: none;
+  padding: 10px;
   display: flex;
   background:rgba(0,0,0,0.1);
   font: 10px Roboto;
@@ -34,6 +33,27 @@ button.rainbow_bar:hover {
   transform: rotate(90deg);
 }
 
+.tile_ul_ss_li_purple{
+    background-color:#983275;
+}
+
+.tile_ul_ss_purple{
+    background-color:#811d5e;
+}
+
+.tile_ul_ss_dk_orange{
+    background-color:#fd2f24;
+}
+
+.tile_ul_ss_orange{
+    background-color:#ff6f01;
+}
+
+.tile_ul_ss_yellow{
+    background-color:#fed800;
+}
+
+/**/
 .tile_ul_red{
     background-color:red;
 }
