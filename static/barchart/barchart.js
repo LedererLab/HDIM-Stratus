@@ -102,7 +102,7 @@ function buildChart( data ) {
 
 }
 
-function colorChart( pos_color, neg_color ) {
+function colorPosVals( pos_color, neg_color ) {
 
   svg.selectAll(".bar")
     .attr("fill", function(d){ return ( d.Val > 0)?( pos_color ):( neg_color ); })

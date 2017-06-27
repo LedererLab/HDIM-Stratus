@@ -1,10 +1,13 @@
 import os
-from data_process import WebFOS, formatForD3
+
+from data_process import formatForD3
+from fos_regression import csvFOS, xlsxFOS
+
 from flask import Flask, render_template, request, json, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = '/home/bephillips2/htdocs/HDIM_App/uploads'
-ALLOWED_EXTENSIONS = set(['txt', 'csv'])
+ALLOWED_EXTENSIONS = set(['csv', 'xlsx'])
 
 app = Flask(__name__)
 
@@ -16,38 +19,30 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
+def get_extension( filename ):
+    return( filename.rsplit('.', 1)[1].lower() )
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route("/echo/", methods=['GET', 'POST'])
-def echo():
-    return json.jsonify( request.args )
-
-@app.route("/hello/")
-def hello():
-    return json.jsonify( {'msg': 'Welcome to Flask!'} )
-
 # Route that will process the file upload
-@app.route('/upload', methods=['POST'])
-def upload():
+@app.route('/regression', methods=['POST'])
+def csv_FOS():
     # Get the name of the uploaded file
     file = request.files['file']
-    # Check if the file is one of the allowed types/extensions
-    if file and allowed_file(file.filename):
-        file_contents = file.read()
+
+    file_contents = file.read()
+    file_extension = get_extension( file.filename )
+
+    if( file_extension == "csv" ):
+        fos = csvFOS()
         return app.response_class(
-            formatForD3( WebFOS( file_contents ) ),
+            formatForD3( fos( file_contents ) ),
             mimetype='application/json' )
 
-# This route is expecting a parameter containing the name
-# of a file. Then it will locate that file on the upload
-# directory and show it on the browser, so if the user uploads
-# an image, that image is going to be show after the upload
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
-
-if __name__ == "__main__":
-    app.run( debug=True )
+    elif( file_extension == "xlsx" ):
+        fos = xlsxFOS()
+        return app.response_class(
+            formatForD3( fos( file_contents ) ),
+            mimetype='application/json' )

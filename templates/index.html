@@ -64,7 +64,7 @@
       <div id="left hand">
         <button class="accordion">File Upload</button>
           <div class="panel">
-            <form action="upload" class="dropzone" id="data-submission", enctype= multipart/form-data></form>
+            <form action="regression" class="dropzone" id="data-submission", enctype= multipart/form-data></form>
           </div>
 
       <button class="accordion">Regression Methods</button>
@@ -206,13 +206,16 @@ Dropzone.options.dataSubmission = {
   maxFilesize: 20, // Size in MB
   maxFiles: 1,
 
+  acceptedFiles:".csv, .xlsx",
+
   maxfilesexceeded: function(file) {
     this.removeAllFiles();
     this.addFile(file);
   },
+
   success: function(file, response) {
 
-    populated ? updateChart( response ): buildChart( response );
+    populated ? updateChart( response ) : buildChart( response );
     populated = true;
     // alert( JSON.stringify(response) );
   }
