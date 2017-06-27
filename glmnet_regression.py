@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import json
 from io import BytesIO
+import glmnet
 
 class multiCV:
 
@@ -15,15 +16,11 @@ class multiCV:
         Y = Y.as_matrix()
         X = X.as_matrix()
 
-        fos = hdim.X_FOS_d()
+        fit = glmnet.cv_glmnet( x = X, y = Y )["glmnet_fit"]
 
-        solver_type = 1 # FISTA
-
-        fos( X, Y, solver_type )
-
-        coefficients = fos.ReturnCoefficients()
-        intercept = fos.ReturnIntercept()
-        support = fos.ReturnSupport()
+        #Default parameters seem to return 2D array for beta and 1D array for a0
+        coefficients = fit["beta"]
+        intercept = fit["a0"]
 
         nz_indices = coefficients.nonzero()[0]
         support_coefs = coefficients[ nz_indices ]
