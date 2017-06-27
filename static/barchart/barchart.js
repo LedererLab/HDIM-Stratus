@@ -5,8 +5,31 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
 var svg = d3.select("div.col1").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+    .attr("class", "graph-svg-component")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var posColor = 'orange';
+var negColor = 'blue';
+
+function setPosColor( pos_color ) {
+  posColor = pos_color;
+  colorVals()
+}
+
+function setNegColor( neg_color ) {
+  negColor = neg_color;
+  colorVals()
+}
+
+function colorVals() {
+
+  svg.selectAll(".bar")
+    .transition()
+    .duration(1000)
+    .attr("fill", function(d){ return ( d.Val > 0)?( posColor ):( negColor ); })
+
+}
 
 // Hold current chart data for sorting etc.
 var chart_data;
@@ -68,7 +91,7 @@ function buildChart( data ) {
   bars.enter().append("rect")
     .attr("class","bar")
     .attr("x", function(d) { return ( d.Val > 0)?( x(Math.min(0, d.Val) + 0.1*max_x) ):( x(Math.min(0, d.Val) - 0.1*max_x) ); })
-    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
+    .attr("fill", function(d){ return ( d.Val > 0)?( posColor ):( negColor ); })
     .transition()
     .duration(1000)
     .ease( 'bounce' )
@@ -82,7 +105,8 @@ function buildChart( data ) {
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-      return "<strong>" + d.Name + ":</strong> <span style='color:red'>" + d.Val + "</span>";
+        return "<strong>" + d.Name + ":</strong> <span style='color: #D3D3D3'>" + d.Val + "</span>";
+
     })
 
   svg.call(tip);
@@ -100,13 +124,6 @@ function buildChart( data ) {
     .attr("class", "y axis")
     .attr("transform", "translate(" + x(0) + ",0)")
     .call(yAxis);
-
-}
-
-function colorPosVals( pos_color, neg_color ) {
-
-  svg.selectAll(".bar")
-    .attr("fill", function(d){ return ( d.Val > 0)?( pos_color ):( neg_color ); })
 
 }
 
@@ -173,7 +190,7 @@ svg.selectAll(".grid")
   // UPDATE old elements present in new data.s
   bars
     .attr("class","bar")
-    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
+    .attr("fill", function(d){ return ( d.Val > 0)?( posColor ):( negColor ); })
     .transition(t)
     .duration(1000)
     .ease( 'bounce' )
@@ -181,28 +198,28 @@ svg.selectAll(".grid")
     .attr("y", function(d) { return y(d.Name); })
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
     .attr("height", y.rangeBand())
-    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); });
+    .attr("fill", function(d){ return ( d.Val > 0)?( posColor ):( negColor ); });
 
   var max_x = d3.max(data, function(d) { return +d.Val;} );
 
   // ENTER new elements present in new data.
   bars.enter().append("rect")
     .attr("class","bar")
-    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
+    .attr("fill", function(d){ return ( d.Val > 0)?( posColor ):( negColor ); })
     .transition()
     .duration(1000)
     .ease( 'bounce' )
     .attr("y", function(d) { return y(d.Name); })
     .attr("x", function(d) { return x(Math.min(0, d.Val)); })
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
-    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
+    .attr("fill", function(d){ return ( d.Val > 0)?( posColor ):( negColor ); })
     .attr("height", y.rangeBand());
 
   var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-      return "<strong>" + d.Name + ":</strong> <span style='color:red'>" + d.Val + "</span>";
+      return "<strong>" + d.Name + ":</strong> <span style='color: #D3D3D3'>" + d.Val + "</span>";
     })
 
     svg.call(tip);

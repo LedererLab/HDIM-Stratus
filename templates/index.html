@@ -133,17 +133,38 @@
                      Color of positive values on bar chart.
                    </div>
                 <ul class = "tile_ul">
-                  <button type="button" class = "rainbow_bar tile_ul_red">
+                  <button type="button" onclick="setPosColor('red')" class = "rainbow_bar tile_ul_red">
                   </button>
-                  <button type="button" class = "rainbow_bar tile_ul_orange">
+                  <button type="button" onclick="setPosColor('orange')" class = "rainbow_bar tile_ul_orange">
                   </button>
-                  <button type="button" class = "rainbow_bar tile_ul_yellow">
+                  <button type="button" onclick="setPosColor('yellow')" class = "rainbow_bar tile_ul_yellow">
                   </button>
-                  <button type="button" class = "rainbow_bar tile_ul_green">
+                  <button type="button" onclick="setPosColor('green')" class = "rainbow_bar tile_ul_green">
                   </button>
-                  <button type="button" class = "rainbow_bar tile_ul_blue">
+                  <button type="button" onclick="setPosColor('blue')" class = "rainbow_bar tile_ul_blue">
                   </button>
-                  <button type="button" class = "rainbow_bar tile_ul_purple">
+                  <button type="button" onclick="setPosColor('purple')" class = "rainbow_bar tile_ul_purple">
+                  </button>
+                </ul>
+              </div>
+              <div>
+                Negative Value Color
+                <div id="neg_val_tt" class="icon material-icons">ic_help</div>
+                   <div class="mdl-tooltip" data-mdl-for="neg_val_tt">
+                     Color of positive values on bar chart.
+                   </div>
+                <ul class = "tile_ul">
+                  <button type="button" onclick="setNegColor('red')" class = "rainbow_bar tile_ul_red">
+                  </button>
+                  <button type="button" onclick="setNegColor('orange')" class = "rainbow_bar tile_ul_orange">
+                  </button>
+                  <button type="button" onclick="setNegColor('yellow')" class = "rainbow_bar tile_ul_yellow">
+                  </button>
+                  <button type="button" onclick="setNegColor('green')" class = "rainbow_bar tile_ul_green">
+                  </button>
+                  <button type="button" onclick="setNegColor('blue')" class = "rainbow_bar tile_ul_blue">
+                  </button>
+                  <button type="button" onclick="setNegColor('purple')" class = "rainbow_bar tile_ul_purple">
                   </button>
                 </ul>
               </div>
