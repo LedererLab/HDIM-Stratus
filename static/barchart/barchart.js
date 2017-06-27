@@ -8,6 +8,7 @@ var svg = d3.select("div.col1").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+// Hold current chart data for sorting etc.
 var chart_data;
 
 function buildChart( data ) {
@@ -172,7 +173,10 @@ svg.selectAll(".grid")
   // UPDATE old elements present in new data.s
   bars
     .attr("class","bar")
+    .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
     .transition(t)
+    .duration(1000)
+    .ease( 'bounce' )
     .attr("x", function(d) { return x(Math.min(0, d.Val)); })
     .attr("y", function(d) { return y(d.Name); })
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
@@ -184,7 +188,6 @@ svg.selectAll(".grid")
   // ENTER new elements present in new data.
   bars.enter().append("rect")
     .attr("class","bar")
-    .attr("x", function(d) { return ( d.Val > 0)?( x(Math.min(0, d.Val) + 0.1*max_x) ):( x(Math.min(0, d.Val) - 0.1*max_x) ); })
     .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
     .transition()
     .duration(1000)
@@ -194,6 +197,19 @@ svg.selectAll(".grid")
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
     .attr("fill", function(d){ return ( d.Val > 0)?( "red" ):( "green" ); })
     .attr("height", y.rangeBand());
+
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return "<strong>" + d.Name + ":</strong> <span style='color:red'>" + d.Val + "</span>";
+    })
+
+    svg.call(tip);
+
+  bars
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);
 
   svg.selectAll(".y.axis")
     .transition(t)

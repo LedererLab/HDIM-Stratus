@@ -203,11 +203,12 @@ var populated = false;
 
 Dropzone.options.dataSubmission = {
 
-  maxFilesize: 20, // Size in MB
+  maxFilesize: 30, // Size in MB
   maxFiles: 1,
 
   acceptedFiles:".csv, .xlsx",
 
+  // If more than one file is added, remove old file and replace with new
   maxfilesexceeded: function(file) {
     this.removeAllFiles();
     this.addFile(file);
