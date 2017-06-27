@@ -115,6 +115,8 @@ function buildChart( data ) {
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);
 
+  bars.on("click", change);
+
   svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
@@ -228,6 +230,8 @@ svg.selectAll(".grid")
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);
 
+  bars.on("click", change);
+
   svg.selectAll(".y.axis")
     .transition(t)
     .attr("transform", "translate(" + x(0) + ",0)")
@@ -239,10 +243,11 @@ svg.selectAll(".grid")
     .call(xAxis);
 
     chart_data = data;
+    sort_vals = true;
 
 }
 
-d3.select("input").on("change", change);
+var sort_vals = true;
 
 function change() {
 
@@ -265,7 +270,7 @@ function change() {
   var c = document.getElementById('box-sort');
 
   // Copy-on-write since tweens are evaluated after a delay.
-  var x0 = y.domain( chart_data.sort( c.checked
+  var x0 = y.domain( chart_data.sort( sort_vals
       ? function(a, b) { return b.Val - a.Val; }
       : function(a, b) { return d3.ascending(a.Name, b.Name); })
       .map(function(d) { return d.Name; }))
@@ -285,5 +290,7 @@ function change() {
       .call(yAxis)
     .selectAll("g")
       .delay(delay);
+
+      sort_vals = !sort_vals;
 
 }
