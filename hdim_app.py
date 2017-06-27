@@ -46,3 +46,6 @@ def csv_FOS():
         return app.response_class(
             formatForD3( fos( file_contents ) ),
             mimetype='application/json' )
+
+if __name__ == '__main__':
+   app.run()

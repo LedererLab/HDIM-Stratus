@@ -11,8 +11,9 @@ spec.loader.exec_module( hdim )
 class multiFOS:
 
     def _process( self, raw_data ):
+
         Y = raw_data.ix[:,0]
-        X = raw_data.ix[:, raw_data.columns != 0 ]
+        X = raw_data.ix[:, raw_data.columns != raw_data.columns[0] ]
 
         col_names = list( raw_data.columns.values )
 
@@ -29,9 +30,12 @@ class multiFOS:
         intercept = fos.ReturnIntercept()
         support = fos.ReturnSupport()
 
-        nz_indices = coefficients.nonzero()[0]
+        nz_indices = support.nonzero()[0]
         support_coefs = coefficients[ nz_indices ]
-        col_names = [ col_names[idx] for idx in nz_indices ]
+
+        # There seems to be an off by one error causing the column names to be
+        # selected incorrently. Hence the + 1.
+        col_names = [ col_names[idx+1] for idx in nz_indices ]
 
         col_names.insert( 0, "Intercept" )
         support_coefs = np.insert( support_coefs, 0, intercept )
