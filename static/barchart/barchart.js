@@ -9,8 +9,8 @@ var svg = d3.select("div.col1").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var posColor = 'orange';
-var negColor = 'blue';
+var posColor = '#811d5e';
+var negColor = '#fed800';
 
 function setPosColor( pos_color ) {
   posColor = d3.rgb(pos_color);
@@ -266,8 +266,6 @@ function change() {
       .orient("left")
       .tickSize(0)
       .tickPadding(6);
-
-  var c = document.getElementById('box-sort');
 
   // Copy-on-write since tweens are evaluated after a delay.
   var x0 = y.domain( chart_data.sort( sort_vals
