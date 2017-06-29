@@ -28,7 +28,7 @@ def index():
 
 # Route that will process the file upload
 @app.route('/regression', methods=['POST'])
-def csv_FOS():
+def regress():
     # Get the name of the uploaded file
     file = request.files['file']
 

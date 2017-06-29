@@ -9,6 +9,14 @@ var svg = d3.select("div.col1").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+      return "<strong>" + d.Name + ":</strong> <span style='color: #D3D3D3'>" + d.Val + "</span>";
+
+  })
+
 var posColor = '#811d5e';
 var negColor = '#fed800';
 
@@ -68,10 +76,10 @@ function buildChart( data ) {
 
     // function for the x grid lines
   function make_x_axis() {
-      return d3.svg.axis()
-          .scale(x)
-          .orient("bottom")
-          .ticks(5)
+    return d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(5)
   }
 
     // Draw the x Grid lines
@@ -100,14 +108,6 @@ function buildChart( data ) {
     .attr("y", function(d) { return y(d.Name); })
     .attr("width", function(d) { return Math.abs(x(d.Val) - x(0)); })
     .attr("height", y.rangeBand());
-
-  var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function(d) {
-        return "<strong>" + d.Name + ":</strong> <span style='color: #D3D3D3'>" + d.Val + "</span>";
-
-    })
 
   svg.call(tip);
 
@@ -217,20 +217,11 @@ svg.selectAll(".grid")
     .attr("fill", function(d){ return ( d.Val > 0)?( posColor ):( negColor ); })
     .attr("height", y.rangeBand());
 
-  var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function(d) {
-      return "<strong>" + d.Name + ":</strong> <span style='color: #D3D3D3'>" + d.Val + "</span>";
-    })
+    bars
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
 
-    svg.call(tip);
-
-  bars
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide);
-
-  bars.on("click", change);
+    bars.on("click", change);
 
   svg.selectAll(".y.axis")
     .transition(t)

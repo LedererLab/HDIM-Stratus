@@ -17,7 +17,7 @@
   display: none;
 }
 
-.grid .tick {
+.grid.tick {
     stroke: lightgrey;
     stroke-opacity: 0.7;
     shape-rendering: crispEdges;
