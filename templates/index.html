@@ -36,9 +36,6 @@
 <!-- Bar Chart -->
 <link rel="stylesheet" type="text/css" href="../static/barchart/barchart.css">
 
-<!-- Tearable Cloth -->
-<link rel="stylesheet" href="../static/cloth/cloth.css" />
-
 <style>
 #left_hand {width: 200px;
             float: left;
@@ -132,29 +129,29 @@
                  </div>
               <div>
                 <ul class = "tile_ul">
-                  <button type="button" onclick="setPosColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
+                  <button type="button" onclick="barChart.setPosColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
                   </button>
-                  <button type="button" onclick="setPosColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
+                  <button type="button" onclick="barChart.setPosColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
                   </button>
-                  <button type="button" onclick="setPosColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
+                  <button type="button" onclick="barChart.setPosColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
                   </button>
-                  <button type="button" onclick="setPosColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
+                  <button type="button" onclick="barChart.setPosColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
                   </button>
-                  <button type="button" onclick="setPosColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
+                  <button type="button" onclick="barChart.setPosColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
                   </button>
                 </ul>
               </div>
               <div>
                 <ul class = "tile_ul">
-                  <button type="button" onclick="setNegColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
+                  <button type="button" onclick="barChart.setNegColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
                   </button>
-                  <button type="button" onclick="setNegColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
+                  <button type="button" onclick="barChart.setNegColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
                   </button>
-                  <button type="button" onclick="setNegColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
+                  <button type="button" onclick="barChart.setNegColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
                   </button>
-                  <button type="button" onclick="setNegColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
+                  <button type="button" onclick="barChart.setNegColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
                   </button>
-                  <button type="button" onclick="setNegColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
+                  <button type="button" onclick="barChart.setNegColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
                   </button>
                 </ul>
               </div>
@@ -214,11 +211,8 @@
 <!-- Rendee barchart and add to particular div-->
 <script src="../static/barchart/barchart.js"></script>
 
-<!-- Tearable Cloth -->
-<script src="../static/cloth/cloth.js"></script>
-
 <script>
-
+var barChart = new BarChart( "col1" );
 var populated = false;
 
 Dropzone.options.dataSubmission = {
@@ -236,9 +230,8 @@ Dropzone.options.dataSubmission = {
 
   success: function(file, response) {
 
-    populated ? updateChart( response ) : buildChart( response );
-    populated = true;
-    // alert( JSON.stringify(response) );
+    barChart.updateChart( response );
+
   }
 };
 
