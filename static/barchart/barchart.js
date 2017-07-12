@@ -2,11 +2,6 @@ class BarChart {
 
   constructor( divName ) {
 
-    this.posColor_ = '#811d5e';
-    this.negColor_ = '#fed800';
-
-    this.sortValues_ = true;
-
     this.tip_ = d3.tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
@@ -17,31 +12,36 @@ class BarChart {
 
     var margin_ = {top: 20, right: 20, bottom: 30, left: 40};
 
-    this.chartData_ = {};
-
-    this.width_ = 960 - margin_.left - margin_.right;
-    this.height_ = 500 - margin_.top - margin_.bottom;
-
     var this_ = this;
 
-    this.svg_ = d3.select("div." + divName ).append("svg")
-        .attr("width", this.width_ + margin_.left + margin_.right)
-        .attr("height", this.height_ + margin_.top + margin_.bottom)
+    this_.posColor_ = '#811d5e';
+    this_.negColor_ = '#fed800';
+
+    this_.sortValues_ = true;
+
+    this_.chartData_ = {};
+
+    this_.width_ = 960 - margin_.left - margin_.right;
+    this_.height_ = 500 - margin_.top - margin_.bottom;
+
+    this_.svg_ = d3.select("div." + divName ).append("svg")
+        .attr("width", this_.width_ + margin_.left + margin_.right)
+        .attr("height", this_.height_ + margin_.top + margin_.bottom)
         .attr("class", "graph-svg-component")
         .append("g")
         .attr("transform", "translate(" + margin_.left + "," + margin_.top + ")");
 
     var x = d3.scale.linear()
-        .range([0, this.width_]);
+        .range([0, this_.width_]);
 
     var y = d3.scale.ordinal()
-        .rangeRoundBands([0, this.height_], 0.1);
+        .rangeRoundBands([0, this_.height_], 0.1);
 
-    this.xAxis_ = d3.svg.axis()
+    this_.xAxis_ = d3.svg.axis()
         .scale(x)
         .orient("bottom");
 
-    this.yAxis_ = d3.svg.axis()
+    this_.yAxis_ = d3.svg.axis()
         .scale(y)
         .orient("left")
         .tickSize(0)
@@ -55,40 +55,40 @@ class BarChart {
     }
 
       // Draw the x Grid lines
-    this.svg_.append("g")
+    this_.svg_.append("g")
       .attr("class", "grid")
-      .attr("transform", "translate(0," + this.height_ + ")")
+      .attr("transform", "translate(0," + this_.height_ + ")")
       .call(make_x_axis()
-          .tickSize( -this.height_, 0, 0)
+          .tickSize( - this_.height_, 0, 0)
           .tickFormat("")
       )
 
-    this.svg_.append("g")
+    this_.svg_.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + this.height_ + ")")
-      .call(this.xAxis_);
+      .attr("transform", "translate(0," + this_.height_ + ")")
+      .call(this_.xAxis_);
 
-    this.svg_.append("g")
+    this_.svg_.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate(" + x(0) + ",0)")
-      .call(this.yAxis_);
+      .call(this_.yAxis_);
 
   }
 
   setPosColor( posColor ) {
 
-    // var this_ = this;
+    var this_ = this;
 
-    this.posColor_ = d3.rgb( posColor );
+    this_.posColor_ = d3.rgb( posColor );
     this.colorVals_();
 
   }
 
   setNegColor( negColor ) {
 
-    // var this_ = this;
+    var this_ = this;
 
-    this.negColor_ = d3.rgb( negColor );
+    this_.negColor_ = d3.rgb( negColor );
     this.colorVals_();
 
   }
@@ -120,10 +120,10 @@ class BarChart {
 
   updateChart( data ) {
 
-    this.chartData_ = data;
-    this.sortValues = true;
-
     var this_ = this;
+
+    this_.chartData_ = data;
+    this_.sortValues = true;
 
     this_.coerceData_( data );
 
@@ -215,14 +215,14 @@ class BarChart {
 
     bars.on( "click", () => this.sortBars() );
 
-    this.svg_.selectAll(".y.axis")
+    this_.svg_.selectAll(".y.axis")
       .transition(t)
       .attr("transform", "translate(" + x(0) + ",0)")
       .call(yAxis);
 
-    this.svg_.selectAll(".x.axis")
+    this_.svg_.selectAll(".x.axis")
       .transition(t)
-      .attr("transform", "translate(0," + this.height_ + ")")
+      .attr("transform", "translate(0," + this_.height_ + ")")
       .call(xAxis);
 
   }
@@ -248,7 +248,7 @@ class BarChart {
         .tickPadding(6);
 
     // Copy-on-write since tweens are evaluated after a delay.
-    var x0 = y.domain( this_.chartData_.sort( this.sortValues
+    var x0 = y.domain( this_.chartData_.sort( this_.sortValues
         ? function(a, b) { return b.Val - a.Val; }
         : function(a, b) { return d3.ascending(a.Name, b.Name); })
         .map(function(d) { return d.Name; }))
@@ -266,10 +266,10 @@ class BarChart {
 
     transition.select(".y.axis")
         .call(yAxis)
-      .selectAll("g")
+        .selectAll("g")
         .delay(delay);
 
-        this.sortValues =! this_.sortValues;
+        this_.sortValues =! this_.sortValues;
 
   }
 
