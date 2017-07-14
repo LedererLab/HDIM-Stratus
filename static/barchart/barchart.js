@@ -21,8 +21,8 @@ class BarChart {
 
     this_.chartData_ = {};
 
-    this_.width_ = 960 - margin_.left - margin_.right;
-    this_.height_ = 500 - margin_.top - margin_.bottom;
+    this_.width_ = 920 - margin_.left - margin_.right;
+    this_.height_ = 720 - margin_.top - margin_.bottom;
 
     this_.svg_ = d3.select("div." + divName ).append("svg")
         .attr("width", this_.width_ + margin_.left + margin_.right)
