@@ -6,12 +6,10 @@ from fos_regression import csvFOS, xlsxFOS
 from flask import Flask, render_template, request, json, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/home/bephillips2/htdocs/HDIM_App/uploads'
 ALLOWED_EXTENSIONS = set(['csv', 'xlsx'])
 
 app = Flask(__name__)
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+d
 app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
 
 # For a given file, return whether it's an allowed type or not

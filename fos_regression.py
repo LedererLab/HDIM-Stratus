@@ -4,7 +4,7 @@ import numpy as np
 import json
 from io import BytesIO
 
-spec = importlib.util.spec_from_file_location("module.name", "/home/bephillips2/Qt-Projects/FOSRedux/Python_Wrapper/hdim.py")
+spec = importlib.util.spec_from_file_location("module.name", "/var/www/HDIM_Stratus/HDIM-Algo/Python_Wrapper/hdim.py")
 hdim = importlib.util.module_from_spec(spec)
 spec.loader.exec_module( hdim )
 
@@ -35,7 +35,7 @@ class multiFOS:
 
         # There seems to be an off by one error causing the column names to be
         # selected incorrently. Hence the + 1.
-        col_names = [ col_names[idx+1] for idx in nz_indices ]
+        col_names = [ col_names[ idx + 1 ] for idx in nz_indices ]
 
         col_names.insert( 0, "Intercept" )
         support_coefs = np.insert( support_coefs, 0, intercept )
