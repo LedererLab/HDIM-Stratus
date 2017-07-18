@@ -1,15 +1,17 @@
 import os
 
 from data_process import formatForD3
-from fos_regression import csvFOS, xlsxFOS
+from fos_regression import csvFOS, xlsxFOS, jsonFOS
 
 from flask import Flask, render_template, request, json, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
+from flask_cors import CORS, cross_origin
 
 ALLOWED_EXTENSIONS = set(['csv', 'xlsx'])
 
 app = Flask(__name__)
-d
+CORS(app)
+
 app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
 
 # For a given file, return whether it's an allowed type or not
@@ -44,6 +46,15 @@ def regress():
         return app.response_class(
             formatForD3( fos( file_contents ) ),
             mimetype='application/json' )
+
+# This should eventually be merged with the '/regression' method. Currently only in place to test Excel application.
+@app.route('/regression.json', methods=['POST'])
+def json_regress():
+	json_blob = request.form['data']
+	fos = jsonFOS()
+	return app.response_class(
+		fos( json_blob ),
+		mimetype='application/json' )
 
 if __name__ == '__main__':
    app.run()

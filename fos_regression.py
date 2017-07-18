@@ -58,3 +58,11 @@ class xlsxFOS( multiFOS ):
 
     def __load( self, raw_content ):
         return( pd.read_excel( BytesIO( raw_content ) ) )
+
+class jsonFOS( multiFOS ):
+
+    def __call__( self, json_blob ):
+        return super()._process( self.__load( json_blob ) )
+
+    def __load( self, json_blob ):
+        return pd.read_json( json_blob, orient='split' )
