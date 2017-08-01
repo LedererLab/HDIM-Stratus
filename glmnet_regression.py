@@ -19,6 +19,7 @@ class multiCV:
         fit = glmnet_py.cvglmnet( x = X, y = Y )["glmnet_fit"]
 
         #Default parameters seem to return 2D array for beta and 1D array for a0
+        # It seems that the 'first' element is the Beta and Intercept that we expect?
         coefficients = fit["beta"][:,1]
         intercept = fit["a0"][:1]
 
@@ -47,3 +48,11 @@ class xlsxCV( multiCV ):
 
     def __load( self, raw_content ):
         return( pd.read_excel( BytesIO( raw_content ) ) )
+
+class jsonCV( multiCV ):
+
+    def __call__( self, json_blob ):
+        return super()._process( self.__load( json_blob ) )
+
+    def __load( self, json_blob ):
+        return pd.read_json( json_blob, orient='split' )

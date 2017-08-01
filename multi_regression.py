@@ -20,6 +20,8 @@ def DTRTCV( file_contents, data_type ):
         fos = csvCV()
     elif( data_type == "xlsx"):
         fos = xlsxCV()
+    elif( data_type == "json" ):
+        fos = jsonCV()
     else:
         raise ValueError('Bad data type specified', data_type)
 
@@ -28,10 +30,8 @@ def DTRTCV( file_contents, data_type ):
 def MultiRegression( file_contents, regression_type, data_type ):
 
     if( regression_type == "fos" ):
-        print( "Using FOS" )
         return DTRTFOS( file_contents, data_type )
     elif ( regression_type == "cv" ):
-        print( "Using Cross-Validation" )
         return DTRTCV( file_contents, data_type )
     elif( regression_type == "av" ):
         # Add DTRTAC ...
