@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import json
 from io import BytesIO
-import glmnet
+import glmnet_py
 
 class multiCV:
 
@@ -16,11 +16,11 @@ class multiCV:
         Y = Y.as_matrix()
         X = X.as_matrix()
 
-        fit = glmnet.cv_glmnet( x = X, y = Y )["glmnet_fit"]
+        fit = glmnet_py.cvglmnet( x = X, y = Y )["glmnet_fit"]
 
         #Default parameters seem to return 2D array for beta and 1D array for a0
-        coefficients = fit["beta"]
-        intercept = fit["a0"]
+        coefficients = fit["beta"][:,1]
+        intercept = fit["a0"][:1]
 
         nz_indices = coefficients.nonzero()[0]
         support_coefs = coefficients[ nz_indices ]
@@ -32,7 +32,7 @@ class multiCV:
         return( pd.DataFrame( data = support_coefs , index = col_names ).to_json(orient='columns') )
 
 
-class csvCV( multiFOS ):
+class csvCV( multiCV ):
 
     def __call__( self, file_contents ):
         return super()._process( self.__load( file_contents ) )
@@ -40,7 +40,7 @@ class csvCV( multiFOS ):
     def __load( self, raw_content ):
         return( pd.read_csv( BytesIO( raw_content ) ) )
 
-class xlsxCV( multiFOS ):
+class xlsxCV( multiCV ):
 
     def __call__( self, file_contents ):
         return super()._process( self.__load( file_contents ) )

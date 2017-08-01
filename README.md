@@ -82,6 +82,23 @@ from `/usr/local/packages/HDIM-Stratus` to `/var/www/HDIM-Stratus`.
 
 ## Set permissions for HDIM-Stratus root directory
 
+### If A Single User is Maintaining App
+
+Navigate to public website directory `cd /var/www`
+
+Set permissions for app root directory for user who will be maintaining the App,
+denoted by `$USERNAME`.
+
+`chown -R $USERNAME ./HDIM-Stratus`
+
+`chgrp -R www-data ./HDIM-Stratus`
+
+`chmod -R 750 ./HDIM-Stratus`
+
+`chmod g+s ./HDIM-Stratus`
+
+### If Multiple Users are Maintaining App
+
 Create group for app developers `sudo groupadd hdim-dev`.
 
 Add all app developers to dev group with `sudo usermode -a -G hdim-dev #USERNAME`.

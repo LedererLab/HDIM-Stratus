@@ -229,10 +229,38 @@ Dropzone.options.dataSubmission = {
     this.addFile(file);
   },
 
-  success: function(file, response) {
+  sending: function( file, xhr, data ) {
 
+    var radios = document.getElementsByTagName('input');
+    var value;
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].type === 'radio' && radios[i].checked) {
+            // get value, set checked flag or do whatever you need to
+            value = radios[i].value;
+        }
+    }
+
+    data.append("regression_type","fos");
+
+    switch(file.type) {
+
+      case 'application/vnd.ms-excel':
+      case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+        data.append("data_type","xlsx");
+      break;
+      case 'text/csv':
+        data.append("data_type","csv");
+        break;
+      default:
+        alert('please enter correct file format');
+      break;
+
+    }
+
+  },
+
+  success: function( file, response ) {
     barChart.updateChart( response );
-
   }
 };
 

@@ -1,7 +1,7 @@
 import os
 
 from data_process import formatForD3
-from fos_regression import csvFOS, xlsxFOS, jsonFOS
+from multi_regression import MultiRegression
 
 from flask import Flask, render_template, request, json, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
@@ -32,20 +32,15 @@ def regress():
     # Get the name of the uploaded file
     file = request.files['file']
 
+    regression_type = request.form['regression_type']
+    data_type = request.form['data_type']
+
     file_contents = file.read()
     file_extension = get_extension( file.filename )
 
-    if( file_extension == "csv" ):
-        fos = csvFOS()
-        return app.response_class(
-            formatForD3( fos( file_contents ) ),
-            mimetype='application/json' )
-
-    elif( file_extension == "xlsx" ):
-        fos = xlsxFOS()
-        return app.response_class(
-            formatForD3( fos( file_contents ) ),
-            mimetype='application/json' )
+    return app.response_class(
+        formatForD3( MultiRegression( file_contents, regression_type, data_type ) ),
+        mimetype='application/json' )
 
 # This should eventually be merged with the '/regression' method. Currently only in place to test Excel application.
 @app.route('/regression.json', methods=['POST'])
@@ -57,4 +52,4 @@ def json_regress():
 		mimetype='application/json' )
 
 if __name__ == '__main__':
-   app.run()
+   app.run( debug = True )

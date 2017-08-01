@@ -22,9 +22,7 @@ class multiFOS:
 
         fos = hdim.X_FOS_d()
 
-        solver_type = 1 # FISTA
-
-        fos( X, Y, solver_type )
+        fos( X, Y, hdim.SolverType_screen_cd )
 
         coefficients = fos.ReturnCoefficients()
         intercept = fos.ReturnIntercept()
