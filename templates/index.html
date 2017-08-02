@@ -68,38 +68,38 @@
       <button class="accordion">Regression Methods</button>
         <div class="panel">
 
-          <div>
-            <label class="mdl-radio mdl-js-radio" for="lasso_av">
-               <input type="radio" id="lasso_av" name="regression" class="mdl-radio__button" checked>
-               <span class="mdl-radio__label">LassoAV</span>
-               <div id="lassoav_tt" class="icon material-icons">ic_help</div>
-               <div class="mdl-tooltip" data-mdl-for="lassoav_tt">
-                 Adaptive validation for the LASSO via glmnet.
-               </div>
-            </label>
-          </div>
-
-          <div>
-            <label class="mdl-radio mdl-js-radio" for="lasso_cv">
-               <input type="radio" id="lasso_cv" name="regression" class="mdl-radio__button" checked>
-               <span class="mdl-radio__label">LassoCV</span>
-               <div id="lassocv_tt" class="icon material-icons">ic_help</div>
-               <div class="mdl-tooltip" data-mdl-for="lassocv_tt">
-                 Cross validation for the LASSO using cv.glmnet.
-               </div>
-            </label>
-          </div>
-
-          <div>
-            <label class="mdl-radio mdl-js-radio" for="fos">
-               <input type="radio" id="fos" name="regression" class="mdl-radio__button" checked>
-               <span class="mdl-radio__label">FOS</span>
-               <div id="fos_tt" class="icon material-icons">ic_help</div>
-               <div class="mdl-tooltip" data-mdl-for="fos_tt">
-                 Fast and Optimial Support algorithm for the LASSO.
-               </div>
-            </label>
-          </div>
+          <table style="width:100%">
+           <tr>
+             <label class="mdl-radio mdl-js-radio" for="lasso_av_button">
+                <input type="radio" id="lasso_av_button" name="regression" class="mdl-radio__button" disabled>
+                <span class="mdl-radio__label">LassoAV</span>
+                <div id="lassoav_tt" class="icon material-icons">ic_help</div>
+                <div class="mdl-tooltip" data-mdl-for="lassoav_tt">
+                  Adaptive validation for the LASSO via glmnet.
+                </div>
+             </label>
+           </tr>
+           <tr>
+             <label class="mdl-radio mdl-js-radio" for="lasso_cv_button">
+                <input type="radio" id="lasso_cv_button" name="regression" class="mdl-radio__button">
+                <span class="mdl-radio__label">LassoCV</span>
+                <div id="lassocv_tt" class="icon material-icons">ic_help</div>
+                <div class="mdl-tooltip" data-mdl-for="lassocv_tt">
+                  Cross validation for the LASSO using cvglmnet.
+                </div>
+             </label>
+           </tr>
+           <tr>
+             <label class="mdl-radio mdl-js-radio" for="fos_button">
+                <input type="radio" id="fos_button" name="regression" class="mdl-radio__button" checked>
+                <span class="mdl-radio__label">FOS</span>
+                <div id="fos_tt" class="icon material-icons">ic_help</div>
+                <div class="mdl-tooltip" data-mdl-for="fos_tt">
+                  Fast and Optimial Support algorithm for the LASSO.
+                </div>
+             </label>
+           </tr>
+         </table>
 
         </div>
 
@@ -231,16 +231,15 @@ Dropzone.options.dataSubmission = {
 
   sending: function( file, xhr, data ) {
 
-    var radios = document.getElementsByTagName('input');
-    var value;
-    for (var i = 0; i < radios.length; i++) {
-        if (radios[i].type === 'radio' && radios[i].checked) {
-            // get value, set checked flag or do whatever you need to
-            value = radios[i].value;
-        }
+    if( document.getElementById("lasso_av_button").checked ) {
+      data.append("regression_type","av");
+    } else if ( document.getElementById("lasso_cv_button").checked ) {
+      data.append("regression_type","cv");
+    } else if ( document.getElementById("fos_button").checked ) {
+      data.append("regression_type","fos");
+    } else {
+      alert( "Please select a valid regression method!" );
     }
-
-    data.append("regression_type","fos");
 
     switch(file.type) {
 
@@ -252,7 +251,7 @@ Dropzone.options.dataSubmission = {
         data.append("data_type","csv");
         break;
       default:
-        alert('please enter correct file format');
+        alert('Please enter correct file format.');
       break;
 
     }

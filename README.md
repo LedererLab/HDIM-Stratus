@@ -44,11 +44,17 @@ is a good idea to remove the default user `ubuntu` with `userdel -r ubuntu`.
 
 ## Install Dependencies
 
+Install basic dependencies
+
 `sudo apt-get install gcc build-essential apache2 python3-dev python3-numpy python3-pip python3-pandas`
 
 `sudo apt-get install python3-flask libapache2-mod-wsgi-py3`
 
 `sudo apt-get install libeigen3-dev swig`
+
+Install Python implementation of glmnet via `pip` since there is no `apt` package available.
+
+`sudo pip3 install glmnet_py`
 
 ## Install HDIM-Stratus
 

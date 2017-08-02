@@ -7,6 +7,9 @@ from flask import Flask, render_template, request, json, redirect, url_for, send
 from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
 
+import logging
+from logging.handlers import RotatingFileHandler
+
 ALLOWED_EXTENSIONS = set(['csv', 'xlsx'])
 
 app = Flask(__name__)
@@ -52,4 +55,7 @@ def json_regress():
 		mimetype='application/json' )
 
 if __name__ == '__main__':
-   app.run( debug = True )
+    handler = RotatingFileHandler('./logs/python_errors.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
+    app.run( debug = True )
