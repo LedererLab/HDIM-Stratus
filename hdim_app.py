@@ -32,27 +32,14 @@ def index():
 # Route that will process the file upload
 @app.route('/regression', methods=['POST'])
 def regress():
-    # Get the name of the uploaded file
-    file = request.files['file']
-
     regression_type = request.form['regression_type']
     data_type = request.form['data_type']
 
-    file_contents = file.read()
-    file_extension = get_extension( file.filename )
+    data = request.form['data'] if data_type == "json" else request.files['file'].read()
 
     return app.response_class(
-        formatForD3( MultiRegression( file_contents, regression_type, data_type ) ),
+        formatForD3( MultiRegression( data, regression_type, data_type ) ),
         mimetype='application/json' )
-
-# This should eventually be merged with the '/regression' method. Currently only in place to test Excel application.
-@app.route('/regression.json', methods=['POST'])
-def json_regress():
-	json_blob = request.form['data']
-	fos = jsonFOS()
-	return app.response_class(
-		fos( json_blob ),
-		mimetype='application/json' )
 
 if __name__ == '__main__':
     handler = RotatingFileHandler('./logs/python_errors.log', maxBytes=10000, backupCount=1)

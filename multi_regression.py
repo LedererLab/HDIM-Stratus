@@ -1,5 +1,5 @@
 from fos_regression import csvFOS, xlsxFOS, jsonFOS
-from glmnet_regression import csvCV, xlsxCV
+from glmnet_regression import csvCV, xlsxCV, jsonCV
 
 # Do the right thing ( DTRT ) with FOS
 def DTRTFOS( file_contents, data_type ):
