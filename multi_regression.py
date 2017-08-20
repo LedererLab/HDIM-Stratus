@@ -1,5 +1,6 @@
 from fos_regression import csvFOS, xlsxFOS, jsonFOS
-from glmnet_regression import csvCV, xlsxCV, jsonCV
+from glmnet_cv_regression import csvCV, xlsxCV, jsonCV
+from glmnet_av_regression import csvAV, xlsxAV, jsonAV
 
 # Do the right thing ( DTRT ) with FOS
 def DTRTFOS( file_contents, data_type ):
@@ -17,15 +18,28 @@ def DTRTFOS( file_contents, data_type ):
 # Do the right thing ( DTRT ) with cross validation
 def DTRTCV( file_contents, data_type ):
     if( data_type == "csv" ):
-        fos = csvCV()
+        cv = csvCV()
     elif( data_type == "xlsx"):
-        fos = xlsxCV()
+        cv = xlsxCV()
     elif( data_type == "json" ):
-        fos = jsonCV()
+        cv = jsonCV()
     else:
         raise ValueError('Bad data type specified', data_type)
 
-    return fos( file_contents )
+    return cv( file_contents )
+
+# Do the right thing ( DTRT ) with adaptive validation
+def DTRTAV( file_contents, data_type ):
+    if( data_type == "csv" ):
+        av = csvAV()
+    elif( data_type == "xlsx"):
+        av = xlsxAV()
+    elif( data_type == "json" ):
+        av = jsonAV()
+    else:
+        raise ValueError('Bad data type specified', data_type)
+
+    return av( file_contents )
 
 def MultiRegression( file_contents, regression_type, data_type ):
 
@@ -34,7 +48,6 @@ def MultiRegression( file_contents, regression_type, data_type ):
     elif ( regression_type == "cv" ):
         return DTRTCV( file_contents, data_type )
     elif( regression_type == "av" ):
-        # Add DTRTAC ...
-        pass
+        return DTRTAV( file_contents, data_type )
     else:
         raise ValueError('Bad regression type specified', regression_type )

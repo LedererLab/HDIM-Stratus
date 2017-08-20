@@ -9,7 +9,7 @@ class multiCV:
 
     def _process( self, raw_data ):
         Y = raw_data.ix[:,0]
-        X = raw_data.ix[:, raw_data.columns != 0 ]
+        X = raw_data.ix[:, raw_data.columns != raw_data.columns[0] ]
 
         col_names = list( raw_data.columns.values )
 
@@ -18,7 +18,7 @@ class multiCV:
 
         fit = glmnet_py.cvglmnet( x = X.copy(), y = Y.copy() )
 
-        coefficients = glmnet_py.cvglmnetCoef( fit, s = 'lambda_min')
+        coefficients = glmnet_py.cvglmnetCoef( fit )
 
         nz_indices = coefficients.nonzero()[0]
         support_coefs = coefficients[ nz_indices ]
@@ -26,6 +26,7 @@ class multiCV:
         # cvglmnetCoef places the intercept term in the first position of the
         # coefficients vector -- need to manually add Intercept name to  vector of column names
         col_names.insert( 0, "Intercept" )
+
         col_names = [ col_names[idx] for idx in nz_indices ]
 
         return( pd.DataFrame( data = support_coefs , index = col_names ).to_json(orient='columns') )
