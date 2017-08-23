@@ -273,4 +273,45 @@ class BarChart {
 
   }
 
+  digestData_( raw_data ) {
+
+    return raw_data.map( function(e) { return e.Name + "," + e.Val + "\n"; } )
+      .join("")
+      .slice(0, - 1); // remove last line break
+
+  }
+
+  downloadText_ ( filename, text ) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+  }
+
+  dumpData() {
+
+    var this_ = this;
+
+    var bar_data = this_.svg_.selectAll(".bar")
+      .data();
+
+    var csv_data = this.digestData_( bar_data );
+
+    this.downloadText_( "Regression_Result.csv", csv_data );
+  }
+
+  dumpImage() {
+
+    var this_ = this;
+
+  }
+
 }

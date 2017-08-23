@@ -124,39 +124,50 @@
                    </div>
                 </label>
               </div>
-                Positive Value Color
-                <div id="pos_val_tt" class="icon material-icons">ic_help</div>
-                 <div class="mdl-tooltip" data-mdl-for="pos_val_tt">
+              <table style="width:100%">
+                <tr>
+                  <td>Positive Values Color</td>
+                  <td>
+                    <ul class = "tile_ul">
+                      <button type="button" onclick="barChart.setPosColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
+                      </button>
+                      <button type="button" onclick="barChart.setPosColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
+                      </button>
+                      <button type="button" onclick="barChart.setPosColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
+                      </button>
+                      <button type="button" onclick="barChart.setPosColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
+                      </button>
+                      <button type="button" onclick="barChart.setPosColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
+                      </button>
+                    </ul>
+                </td>
+                <td><div id="pos_val_tt" class="icon material-icons">ic_help</div></td>
+                   <div class="mdl-tooltip" data-mdl-for="pos_val_tt">
                    Color of positive values on bar chart.
                  </div>
-              <div>
-                <ul class = "tile_ul">
-                  <button type="button" onclick="barChart.setPosColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
-                  </button>
-                  <button type="button" onclick="barChart.setPosColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
-                  </button>
-                  <button type="button" onclick="barChart.setPosColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
-                  </button>
-                  <button type="button" onclick="barChart.setPosColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
-                  </button>
-                  <button type="button" onclick="barChart.setPosColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
-                  </button>
-                </ul>
-              </div>
-              <div>
-                <ul class = "tile_ul">
-                  <button type="button" onclick="barChart.setNegColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
-                  </button>
-                  <button type="button" onclick="barChart.setNegColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
-                  </button>
-                  <button type="button" onclick="barChart.setNegColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
-                  </button>
-                  <button type="button" onclick="barChart.setNegColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
-                  </button>
-                  <button type="button" onclick="barChart.setNegColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
-                  </button>
-                </ul>
-              </div>
+                </tr>
+                <tr>
+                  <td>Negative Values Color</td>
+                  <td>
+                    <ul class = "tile_ul">
+                      <button type="button" onclick="barChart.setNegColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
+                      </button>
+                      <button type="button" onclick="barChart.setNegColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
+                      </button>
+                      <button type="button" onclick="barChart.setNegColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
+                      </button>
+                      <button type="button" onclick="barChart.setNegColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
+                      </button>
+                      <button type="button" onclick="barChart.setNegColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
+                      </button>
+                    </ul>
+                </td>
+                <td><div id="neg_val_tt" class="icon material-icons">ic_help</div></td>
+                   <div class="mdl-tooltip" data-mdl-for="neg_val_tt">
+                   Color of negative values on bar chart.
+                 </div>
+                </tr>
+              </table>
             </div>
 
             <button class="accordion">Download Results</button>
