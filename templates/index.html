@@ -174,10 +174,10 @@
               <div class="panel">
 
                 <div class = "mdl-button-group">
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                <button onclick="barChart.dumpImage()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                   Download Graph
                 </button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                <button onclick="barChart.dumpData()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                   Download Data
                 </button>
                 </div>
@@ -220,8 +220,6 @@
 
 <!-- Process accordion events -->
 <script src="../static/accordion/accordion.js"></script>
-
-<!-- Rendee barchart and add to particular div-->
 <script src="../static/barchart/barchart.js"></script>
 
 <script>

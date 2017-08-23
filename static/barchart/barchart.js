@@ -14,6 +14,8 @@ class BarChart {
 
     var this_ = this;
 
+    this_.divName_ = divName;
+
     this_.posColor_ = '#811d5e';
     this_.negColor_ = '#fed800';
 
@@ -311,6 +313,77 @@ class BarChart {
   dumpImage() {
 
     var this_ = this;
+
+    /*
+    Based off  gustavohenke's svg2png.js
+    gist.github.com/gustavohenke/9073132
+    */
+
+    // var svg = document.querySelector( "svg" );
+
+    var svg = d3.select('svg').node();
+
+    // var svg = this_.svg_.node();
+
+    var svgData = new XMLSerializer().serializeToString( svg );
+
+    var canvas = document.createElement( "canvas" );
+
+    var rect_ = d3.select("div." + this_.divName_ ).node().getBoundingClientRect();
+
+    canvas.width = rect_.width;
+    canvas.height = rect_.height;
+
+    var ctx = canvas.getContext( "2d" );
+
+    var dataUri = '';
+    try {
+        dataUri = 'data:image/svg+xml;base64,' + btoa(svgData);
+    } catch (ex) {
+
+        // For browsers that don't have a btoa() method, send the text off to a webservice for encoding
+        /* Uncomment if needed (requires jQuery)
+        $.ajax({
+            url: "http://www.mysite.com/webservice/encodeString",
+            data: { svg: svgData },
+            type: "POST",
+            async: false,
+            success: function(encodedSVG) {
+                dataUri = 'data:image/svg+xml;base64,' + encodedSVG;
+            }
+        })
+        */
+
+    }
+
+    var img = document.createElement( "img" );
+
+    img.onload = function() {
+        ctx.drawImage( img, 0, 0 );
+
+        try {
+
+            // Try to initiate a download of the image
+            var a = document.createElement("a");
+            a.download = "Regression_Results.png";
+            a.href = canvas.toDataURL("image/png");
+            document.querySelector("body").appendChild(a);
+            a.click();
+            document.querySelector("body").removeChild(a);
+
+        } catch (ex) {
+
+            // If downloading not possible (as in IE due to canvas.toDataURL() security issue)
+            // then display image for saving via right-click
+
+            var imgPreview = document.createElement("div");
+            imgPreview.appendChild(img);
+            document.querySelector("body").appendChild(imgPreview);
+
+        }
+    };
+
+    img.src = dataUri;
 
   }
 
