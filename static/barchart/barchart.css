@@ -69,3 +69,27 @@
   top: 100%;
   left: 0;
 }
+
+.center-block {
+    text-align:center;
+    background-color:blue;
+    height:400px;
+    width:600px;
+}
+.center-block.block {
+    height:100px;
+    width:200px;
+    text-align:left;
+}
+.center-block.center {
+    margin:auto;
+    background-color:green;
+}
+.center-block.left {
+    margin:auto auto auto 0;
+    background-color:red;
+}
+.center-block.right {
+    margin:auto 0 auto auto;
+    background-color:yellow;
+}

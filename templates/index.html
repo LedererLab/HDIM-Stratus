@@ -63,6 +63,12 @@
         <button class="accordion">File Upload</button>
           <div class="panel">
             <form action="regression" class="dropzone" id="data-submission", enctype="multipart/form-data"></form>
+            <div class = "mdl-button-group">
+            <button id="recompute-results" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+              Compute
+            </button>
+            </div>
+            </div>
           </div>
 
       <button class="accordion">Regression Methods</button>
@@ -174,7 +180,7 @@
               <div class="panel">
 
                 <div class = "mdl-button-group">
-                <button onclick="barChart.dumpImage()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                <button onclick="barChart.dumpData()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                   Download Graph
                 </button>
                 <button onclick="barChart.dumpData()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
@@ -229,8 +235,19 @@ Dropzone.options.dataSubmission = {
 
   maxFilesize: 30, // Size in MB
   maxFiles: 1,
+  autoProcessQueue: false, // Prevent files fome being submitted automatically
 
   acceptedFiles:".csv, .xlsx",
+
+  init: function() {
+    var submitButton = document.querySelector("#recompute-results")
+        dataSubmission = this; // closure
+
+    submitButton.addEventListener("click", function() {
+      dataSubmission.processQueue(); // Tell Dropzone to process all queued files.
+    });
+
+  },
 
   // If more than one file is added, remove old file and replace with new
   maxfilesexceeded: function(file) {
@@ -269,9 +286,9 @@ Dropzone.options.dataSubmission = {
 
   success: function( file, response ) {
     barChart.updateChart( response );
+    file.status = Dropzone.QUEUED; // Re-que file so that it can be resubmitted
   }
 };
-
 </script>
 
 </body>
