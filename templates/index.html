@@ -258,6 +258,14 @@
          db_select.remove(i);
      }
    }
+
+  function selectFirstOption( drop_down ) {
+
+    var db_select = document.getElementById( drop_down );
+    db_select.selectedIndex = 0;
+
+  }
+
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
@@ -355,6 +363,7 @@ Dropzone.options.dataSubmission = {
             var data_names = Object.keys(results.data[0]);
             removeOptions( "response_var" );
             populateColumnNames( data_names, "response_var" );
+            selectFirstOption( "response_var" );
           }
         });
         break;
