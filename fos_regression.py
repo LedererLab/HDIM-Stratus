@@ -10,10 +10,12 @@ spec.loader.exec_module( hdim )
 
 class multiFOS:
 
-    def _process( self, raw_data ):
+    def _process( self, raw_data, regression_var ):
 
-        Y = raw_data.ix[:,0]
-        X = raw_data.ix[:, raw_data.columns != raw_data.columns[0] ]
+        reg_idx = int( regression_var )
+
+        Y = raw_data.ix[:,reg_idx]
+        X = raw_data.ix[:, raw_data.columns != raw_data.columns[reg_idx] ]
 
         col_names = list( raw_data.columns.values )
 
@@ -43,24 +45,24 @@ class multiFOS:
 
 class csvFOS( multiFOS ):
 
-    def __call__( self, file_contents ):
-        return super()._process( self.__load( file_contents ) )
+    def __call__( self, file_contents, regression_var ):
+        return super()._process( self.__load( file_contents ), regression_var )
 
     def __load( self, raw_content ):
         return( pd.read_csv( BytesIO( raw_content ) ) )
 
 class xlsxFOS( multiFOS ):
 
-    def __call__( self, file_contents ):
-        return super()._process( self.__load( file_contents ) )
+    def __call__( self, file_contents, regression_var ):
+        return super()._process( self.__load( file_contents ), regression_var )
 
     def __load( self, raw_content ):
         return( pd.read_excel( BytesIO( raw_content ) ) )
 
 class jsonFOS( multiFOS ):
 
-    def __call__( self, json_blob ):
-        return super()._process( self.__load( json_blob ) )
+    def __call__( self, json_blob, regression_var ):
+        return super()._process( self.__load( json_blob ), regression_var )
 
     def __load( self, json_blob ):
         return pd.read_json( json_blob, orient='split' )
