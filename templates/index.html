@@ -43,9 +43,17 @@
 <!-- Bar Chart -->
 <link rel="stylesheet" type="text/css" href="../static/barchart/barchart.css">
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
 <style>
 #left_hand {width: 200px;
-            float: left;``
+            float: left;
             }
 
 #main_content {margin: 0 0 0 200px; /* adjust for a gutter between divs */ }
@@ -55,178 +63,198 @@
 
 <body>
 
-<div class="colmask leftmenu">
-	<div class="colleft">
-		<div class="col1">
-			<!-- Column 1 start -->
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="col2">
+      <!--Sidebar content-->
+      <div class="container">
+        <div id="accordion" class="accordion">
+            <div class="card m-b-0">
 
-			<!-- Column 1 end -->
-		</div>
-		<div class="col2">
-			<!-- Column 2 start -->
-      <div id="left hand">
-        <button class="accordion">File Upload</button>
-          <div class="panel">
-            <form action="regression" class="dropzone" id="data-submission", enctype="multipart/form-data"></form>
-            <div class = "mdl-button-group">
-            <button id="recompute-results" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-              Compute
-            </button>
-            </div>
-            </div>
-          </div>
-
-      <button class="accordion">Regression Methods</button>
-        <div class="panel">
-
-          <table style="width:100%">
-           <tr>
-             <label class="mdl-radio mdl-js-radio" for="lasso_av_button">
-                <input type="radio" id="lasso_av_button" name="regression" class="mdl-radio__button">
-                <span class="mdl-radio__label">LassoAV</span>
-                <div id="lassoav_tt" class="icon material-icons">ic_help</div>
-                <div class="mdl-tooltip" data-mdl-for="lassoav_tt">
-                  Adaptive validation for the LASSO via glmnet.
+                <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <a class="card-title">
+                        File Upload
+                    </a>
                 </div>
-             </label>
-           </tr>
-           <tr>
-             <label class="mdl-radio mdl-js-radio" for="lasso_cv_button">
-                <input type="radio" id="lasso_cv_button" name="regression" class="mdl-radio__button">
-                <span class="mdl-radio__label">LassoCV</span>
-                <div id="lassocv_tt" class="icon material-icons">ic_help</div>
-                <div class="mdl-tooltip" data-mdl-for="lassocv_tt">
-                  Cross validation for the LASSO using cvglmnet.
-                </div>
-             </label>
-           </tr>
-           <tr>
-             <label class="mdl-radio mdl-js-radio" for="fos_button">
-                <input type="radio" id="fos_button" name="regression" class="mdl-radio__button" checked>
-                <span class="mdl-radio__label">FOS</span>
-                <div id="fos_tt" class="icon material-icons">ic_help</div>
-                <div class="mdl-tooltip" data-mdl-for="fos_tt">
-                  Fast and Optimial Support algorithm for the LASSO.
-                </div>
-             </label>
-           </tr>
-         </table>
-
-        </div>
-
-        <button class="accordion">Summary</button>
-          <div class="panel">
-            Summary Input
-            <div id="tt1" class="icon material-icons">ic_help</div>
-            <div class="mdl-tooltip" data-mdl-for="tt1">
-              Description of Summary Report Parameter.
-            </div>
-          </div>
-
-          <button class="accordion">Bar Chart Settings</button>
-            <div class="panel">
-              <div>
-                <label class="mdl-checkbox mdl-js-checkbox" for="show_intercept">
-                   <input type="checkbox" id="show_intercept" class="mdl-checkbox__input" checked>
-                   <span class="mdl-checkbox__label">Show Intercept</span>
-                   <div id="show_int_tt" class="icon material-icons">ic_help</div>
-                   <div class="mdl-tooltip" data-mdl-for="show_int_tt">
-                     Show or hide the intercept term on the bar chart.
-                   </div>
-                </label>
-              </div>
-              <table style="width:100%">
-                <tr>
-                  <td>Positive Values Color</td>
-                  <td>
-                    <ul class = "tile_ul">
-                      <button type="button" onclick="barChart.setPosColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
-                      </button>
-                      <button type="button" onclick="barChart.setPosColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
-                      </button>
-                      <button type="button" onclick="barChart.setPosColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
-                      </button>
-                      <button type="button" onclick="barChart.setPosColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
-                      </button>
-                      <button type="button" onclick="barChart.setPosColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
-                      </button>
-                    </ul>
-                </td>
-                <td><div id="pos_val_tt" class="icon material-icons">ic_help</div></td>
-                   <div class="mdl-tooltip" data-mdl-for="pos_val_tt">
-                   Color of positive values on bar chart.
-                 </div>
-                </tr>
-                <tr>
-                  <td>Negative Values Color</td>
-                  <td>
-                    <ul class = "tile_ul">
-                      <button type="button" onclick="barChart.setNegColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
-                      </button>
-                      <button type="button" onclick="barChart.setNegColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
-                      </button>
-                      <button type="button" onclick="barChart.setNegColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
-                      </button>
-                      <button type="button" onclick="barChart.setNegColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
-                      </button>
-                      <button type="button" onclick="barChart.setNegColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
-                      </button>
-                    </ul>
-                </td>
-                <td><div id="neg_val_tt" class="icon material-icons">ic_help</div></td>
-                   <div class="mdl-tooltip" data-mdl-for="neg_val_tt">
-                   Color of negative values on bar chart.
-                 </div>
-                </tr>
-              </table>
-
-              <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-                <select class="mdl-selectfield__select" id="response_var" name="response">
-                  <option value=""></option>
-                </select>
-                <label class="mdl-selectfield__label" for="response_var">Response Variable</label>
-              </div>
-
-            </div>
-
-            <button class="accordion">Download Results</button>
-              <div class="panel">
-
-                <div class = "mdl-button-group">
-                <button onclick="barChart.dumpImage()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                  Download Graph
-                </button>
-                <button onclick="barChart.dumpData()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                  Download Data
-                </button>
+                <div id="collapseOne" class="card-block collapse">
+                    <form action="regression" class="dropzone" id="data-submission", enctype="multipart/form-data"></form>
+                      <div class = "mdl-button-group">
+                        <button id="recompute-results" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                          Compute
+                        </button>
+                      </div>
                 </div>
 
-              </div>
+                <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    <a class="card-title">
+                        Regressin Methods
+                    </a>
+                </div>
+                <div id="collapseTwo" class="card-block collapse">
+                  <table style="width:100%">
+                   <tr>
+                     <label class="mdl-radio mdl-js-radio" for="lasso_av_button">
+                        <input type="radio" id="lasso_av_button" name="regression" class="mdl-radio__button">
+                        <span class="mdl-radio__label">LassoAV</span>
+                        <div id="lassoav_tt" class="icon material-icons">ic_help</div>
+                        <div class="mdl-tooltip" data-mdl-for="lassoav_tt">
+                          Adaptive validation for the LASSO via glmnet.
+                        </div>
+                     </label>
+                   </tr>
+                   <tr>
+                     <label class="mdl-radio mdl-js-radio" for="lasso_cv_button">
+                        <input type="radio" id="lasso_cv_button" name="regression" class="mdl-radio__button">
+                        <span class="mdl-radio__label">LassoCV</span>
+                        <div id="lassocv_tt" class="icon material-icons">ic_help</div>
+                        <div class="mdl-tooltip" data-mdl-for="lassocv_tt">
+                          Cross validation for the LASSO using cvglmnet.
+                        </div>
+                     </label>
+                   </tr>
+                   <tr>
+                     <label class="mdl-radio mdl-js-radio" for="fos_button">
+                        <input type="radio" id="fos_button" name="regression" class="mdl-radio__button" checked>
+                        <span class="mdl-radio__label">FOS</span>
+                        <div id="fos_tt" class="icon material-icons">ic_help</div>
+                        <div class="mdl-tooltip" data-mdl-for="fos_tt">
+                          Fast and Optimial Support algorithm for the LASSO.
+                        </div>
+                     </label>
+                   </tr>
+                 </table>
+                </div>
 
-            <!-- <button class="accordion">PDF Report Request</button>
-              <div class="panel">
-                <form action="#">
-                  <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input" type="text" id="name_form">
-                    <label class="mdl-textfield__label" for="name_form">Name...</label>
+                <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                    <a class="card-title">
+                        Data Summary
+                    </a>
+                </div>
+                <div id="collapseThree" class="card-block collapse">
+                  Contents
+                </div>
+
+                <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                    <a class="card-title">
+                        Bar Chart Settings
+                    </a>
+                </div>
+                <div id="collapseFour" class="card-block collapse">
+                  <div>
+                    <label class="mdl-checkbox mdl-js-checkbox" for="show_intercept">
+                       <input type="checkbox" id="show_intercept" class="mdl-checkbox__input" checked>
+                       <span class="mdl-checkbox__label">Show Intercept</span>
+                       <div id="show_int_tt" class="icon material-icons">ic_help</div>
+                       <div class="mdl-tooltip" data-mdl-for="show_int_tt">
+                         Show or hide the intercept term on the bar chart.
+                       </div>
+                    </label>
                   </div>
-                  <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input" type="text" id="email_form">
-                    <label class="mdl-textfield__label" for="email_form">E-Mail...</label>
+                  <table style="width:100%">
+                    <tr>
+                      <td>Positive Values Color</td>
+                      <td>
+                        <ul class = "tile_ul">
+                          <button type="button" onclick="barChart.setPosColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
+                          </button>
+                          <button type="button" onclick="barChart.setPosColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
+                          </button>
+                          <button type="button" onclick="barChart.setPosColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
+                          </button>
+                          <button type="button" onclick="barChart.setPosColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
+                          </button>
+                          <button type="button" onclick="barChart.setPosColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
+                          </button>
+                        </ul>
+                    </td>
+                    <td><div id="pos_val_tt" class="icon material-icons">ic_help</div></td>
+                       <div class="mdl-tooltip" data-mdl-for="pos_val_tt">
+                       Color of positive values on bar chart.
+                     </div>
+                    </tr>
+                    <tr>
+                      <td>Negative Values Color</td>
+                      <td>
+                        <ul class = "tile_ul">
+                          <button type="button" onclick="barChart.setNegColor('\#983275')" class = "rainbow_bar tile_ul_ss_li_purple">
+                          </button>
+                          <button type="button" onclick="barChart.setNegColor('\#811d5e')" class = "rainbow_bar tile_ul_ss_purple">
+                          </button>
+                          <button type="button" onclick="barChart.setNegColor('\#fd2f24')" class = "rainbow_bar tile_ul_ss_dk_orange">
+                          </button>
+                          <button type="button" onclick="barChart.setNegColor('\#ff6f01')" class = "rainbow_bar tile_ul_ss_orange">
+                          </button>
+                          <button type="button" onclick="barChart.setNegColor('\#fed800')" class = "rainbow_bar tile_ul_ss_yellow">
+                          </button>
+                        </ul>
+                    </td>
+                    <td><div id="neg_val_tt" class="icon material-icons">ic_help</div></td>
+                       <div class="mdl-tooltip" data-mdl-for="neg_val_tt">
+                       Color of negative values on bar chart.
+                     </div>
+                    </tr>
+                  </table>
+
+                  <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
+                    <select class="mdl-selectfield__select" id="response_var" name="response">
+                      <option value=""></option>
+                    </select>
+                    <label class="mdl-selectfield__label" for="response_var">Response Variable</label>
                   </div>
+                </div>
+
+                <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                    <a class="card-title">
+                        Download Results
+                    </a>
+                </div>
+                <div id="collapseFive" class="card-block collapse">
                   <div class = "mdl-button-group">
-                  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                    Send E-Mail Report
+                  <button onclick="barChart.dumpImage()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    Download Graph
+                  </button>
+                  <button onclick="barChart.dumpData()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    Download Data
                   </button>
                   </div>
-                </form>
-              </div> -->
+                </div>
+
+                <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                    <a class="card-title">
+                        PDF Report
+                    </a>
+                </div>
+                <div id="collapseSix" class="card-block collapse">
+                  <form action="#">
+                    <div class="mdl-textfield mdl-js-textfield">
+                      <input class="mdl-textfield__input" type="text" id="name_form">
+                      <label class="mdl-textfield__label" for="name_form">Name...</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield">
+                      <input class="mdl-textfield__input" type="text" id="email_form">
+                      <label class="mdl-textfield__label" for="email_form">E-Mail...</label>
+                    </div>
+                    <div class = "mdl-button-group">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                      Send E-Mail Report
+                    </button>
+                    </div>
+                  </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
       </div>
-			<!-- Column 2 end -->
-		</div>
-	</div>
+      <!-- Column 2 end -->
+    </div>
+    <div class="col1">
+      <!--Body content-->
+    </div>
+  </div>
 </div>
+
 <div id="footer">
   <footer class="mdl-mini-footer">
     <ul class="mdl-mini-footer__link-list">
@@ -234,10 +262,6 @@
     </ul>
   </footer>
 </div>
-
-<!-- Process accordion events -->
-<script src="../static/accordion/accordion.js"></script>
-<script src="../static/barchart/barchart.js"></script>
 
 <script>
   function populateColumnNames( col_name_array, drop_down ) {
