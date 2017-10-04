@@ -3,3 +3,4 @@ glmnet_py
 scipy
 matplotlib
 flask_cors
+xlrd
