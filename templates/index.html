@@ -142,12 +142,12 @@
                   <div class="container">
 
                     <div class="row">
-                      <p>Rows:</p>
+                      <p>Rows: </p>
                       <p id="number_rows">N/A</p>
                     </div>
 
                     <div class="row">
-                      <p>Columns:</p>
+                      <p>Columns: </p>
                       <p id="number_cols">N/A</p>
                     </div>
 
@@ -337,6 +337,11 @@ $(".js-example-theme-single").select2({
 
   }
 
+  function populateSubmissionInfo( num_rows, num_cols ) {
+    document.getElementById('number_rows').innerHTML = num_rows.toString();
+    document.getElementById('number_cols').innerHTML = num_cols.toString();
+  }
+
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
@@ -359,10 +364,27 @@ function get_header_row( sheet ) {
     return headers;
 }
 
-function get_number_rows_cols( sheet ) {
+function getRowColsXLSX( sheet ) {
 
   var rowNum = XLSX.utils.decode_range(sheet['!ref']).e.r;
   var colNum = XLSX.utils.decode_range(sheet['!ref']).e.c;
+
+  var dict = {};
+  dict['Rows'] = rowNum;
+  dict['Cols'] = colNum;
+
+  return dict;
+
+}
+
+function getRowColsCSV( parsed_csv ) {
+  var data = parsed_csv.data;
+
+  var rowNum = data.length;
+  // Get length of first column, which will gives us the number of columns,
+  // assuming all rows are the same length. If they are not, we have bigger
+  // problems to deal with.
+  var colNum = Object.keys( data[0] ).length;
 
   var dict = {};
   dict['Rows'] = rowNum;
@@ -393,11 +415,12 @@ function parseExcel (file) {
 
         var ith_sheet = workbook.Sheets[ workbook.SheetNames[i] ];
         var header = get_header_row( ith_sheet );
-        var rows_cols = get_number_rows_cols( ith_sheet );
+        var rows_cols = getRowColsXLSX( ith_sheet );
 
         removeOptions( "response_var" );
         populateColumnNames( header, "response_var" );
         selectFirstOption( "response_var" );
+        populateSubmissionInfo( rows_cols.Rows, rows_cols.Cols );
 
       }
 
@@ -445,7 +468,7 @@ Dropzone.options.dataSubmission = {
     switch(file.type) {
       case 'application/vnd.ms-excel':
       case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-        console.log( parseExcel( file ) );
+        parseExcel( file );
       break;
       case 'text/csv':
         Papa.parse(file, {
@@ -456,6 +479,8 @@ Dropzone.options.dataSubmission = {
             removeOptions( "response_var" );
             populateColumnNames( data_names, "response_var" );
             selectFirstOption( "response_var" );
+            var rows_cols = getRowColsCSV( results );
+            populateSubmissionInfo( rows_cols.Rows, rows_cols.Cols );
           }
         });
         break;
