@@ -143,12 +143,12 @@
 
                     <div class="row">
                       <p>Rows:</p>
-                      <p>N/A</p>
+                      <p id="number_rows">N/A</p>
                     </div>
 
                     <div class="row">
                       <p>Columns:</p>
-                      <p>N/A</p>
+                      <p id="number_cols">N/A</p>
                     </div>
 
                   </div>
@@ -343,7 +343,7 @@ $(".js-example-theme-single").select2({
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
 
 <script>
-function get_header_row(sheet) {
+function get_header_row( sheet ) {
     var headers = [];
     var range = XLSX.utils.decode_range(sheet['!ref']);
     var C, R = range.s.r; /* start in the first row */
@@ -357,6 +357,19 @@ function get_header_row(sheet) {
         headers.push(hdr);
     }
     return headers;
+}
+
+function get_number_rows_cols( sheet ) {
+
+  var rowNum = XLSX.utils.decode_range(sheet['!ref']).e.r;
+  var colNum = XLSX.utils.decode_range(sheet['!ref']).e.c;
+
+  var dict = {};
+  dict['Rows'] = rowNum;
+  dict['Cols'] = colNum;
+
+  return dict;
+
 }
 
 function parseExcel (file) {
@@ -377,8 +390,15 @@ function parseExcel (file) {
 
       var i;
       for (i = 0; i < workbook.SheetNames.length; i++) {
-        var header = get_header_row(workbook.Sheets[ workbook.SheetNames[i] ]);
-        console.log( header );
+
+        var ith_sheet = workbook.Sheets[ workbook.SheetNames[i] ];
+        var header = get_header_row( ith_sheet );
+        var rows_cols = get_number_rows_cols( ith_sheet );
+
+        removeOptions( "response_var" );
+        populateColumnNames( header, "response_var" );
+        selectFirstOption( "response_var" );
+
       }
 
     };
