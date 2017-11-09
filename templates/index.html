@@ -57,6 +57,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
 
+<!-- Plotly -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 </head>
 
@@ -280,7 +282,7 @@
 
 </div>
       <!-- Column 2 end -->
-    <div class="col-md-8 barchart-canvas">
+    <div class="col-md-8 barchart-canvas" id="barchart-canvas">
       <!--Body content-->
     </div>
 
@@ -441,6 +443,49 @@ function parseExcel (file) {
 </script>
 
 <script>
+
+  function makeSurfacePlot( divName, csvData ) {
+
+      var data = csvData.data;
+      var z_data = [];
+
+      // Iterate through rows of the parsed CSV file
+      var rows = data.length;
+
+      for( var i = 0 ; i < rows ; i++ ) {
+
+        var row_i = data[i];
+        var keys = Object.keys( row_i );
+        z_data.push( keys.map(function(v) { return row_i[v]; }) );
+      }
+
+      console.log( z_data );
+
+      var data = [{
+                 z: z_data,
+                 type: 'surface'
+              }];
+
+      var layout = {
+        title: 'Preview of Uploaded File',
+        autosize: true,
+        width: 920,
+        height: 720,
+        margin: {
+          l: 65,
+          r: 50,
+          b: 65,
+          t: 90,
+        }
+      };
+
+      Plotly.newPlot( divName , data, layout );
+
+  }
+
+</script>
+
+<script>
 var barChart = new BarChart( "barchart-canvas" );
 
 Dropzone.options.dataSubmission = {
@@ -469,7 +514,7 @@ Dropzone.options.dataSubmission = {
 
   addedfile: function( file ) {
 
-    switch(file.type) {
+    switch( file.type ) {
       case 'application/vnd.ms-excel':
       case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
         parseExcel( file );
@@ -479,6 +524,7 @@ Dropzone.options.dataSubmission = {
           header: true,
           dynamicTyping: true,
           complete: function(results) {
+            makeSurfacePlot( "barchart-canvas", results );
             var data_names = Object.keys(results.data[0]);
             removeOptions( "response_var" );
             populateColumnNames( data_names, "response_var" );
