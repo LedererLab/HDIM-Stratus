@@ -72,9 +72,7 @@ def regress():
 
     data = request.form['data'] if data_type == "json" else request.files['file'].read()
 
-    return app.response_class(
-        formatForD3( MultiRegression( data, regression_type, data_type, regression_var ) ),
-        mimetype='application/json' )
+    return app.response_class( formatForD3( MultiRegression( data, regression_type, data_type, regression_var ) ), mimetype='application/json' )
 
 if __name__ == '__main__':
     handler = RotatingFileHandler('./logs/python_errors.log', maxBytes=10000, backupCount=1)
