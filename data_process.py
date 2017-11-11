@@ -20,7 +20,7 @@ def formatForD3( pandas_json ):
     [{Name: "lstat", Val: -0.5213794328}, {Name: "Intercept", Val: 20.8178307102},{Name: "lstat", Val: -0.5213794328}]
 
     Args:
-        pandas_json: JSON object output from pandas.dataframe.to_json(orient='columns')
+        pandas_json: JSON object output from pandas.DataFrame.to_json(orient='columns')
 
     Returns:
         Reformatted JSON object.

@@ -13,7 +13,7 @@ def DTRTFOS( file_contents, data_type, regression_var ):
         regression_var: Parameter 'regression_index' from POST request.
 
     Returns:
-        Results from running FOS on input data, this will be a pandas dataframe
+        Results from running FOS on input data, this will be a pandas DataFrame
         containing the result cofficients, including labels.
 
     Raises:
@@ -43,7 +43,7 @@ def DTRTCV( file_contents, data_type, regression_var ):
         regression_var: Parameter 'regression_index' from POST request.
 
     Returns:
-        Results from running glmnet on input data, this will be a pandas dataframe
+        Results from running glmnet on input data, this will be a pandas DataFrame
         containing the result cofficients, including labels.
 
     Raises:
@@ -73,7 +73,7 @@ def DTRTAV( file_contents, data_type, regression_var ):
         regression_var: Parameter 'regression_index' from POST request.
 
     Returns:
-        Results from running glmnet on input data, this will be a pandas dataframe
+        Results from running glmnet on input data, this will be a pandas DataFrame
         containing the result cofficients, including labels.
 
     Raises:
@@ -103,7 +103,7 @@ def MultiRegression( file_contents, regression_type, data_type, regression_var )
         regression_var: Parameter 'regression_index' from POST request.
 
     Returns:
-        Results from running glmnet on input data, this will be a pandas dataframe
+        Results from running glmnet on input data, this will be a pandas DataFrame
         containing the result cofficients, including labels.
 
     Raises:
