@@ -163,7 +163,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'HDIM-Stratus', u'HDIM-Stratus Documentation',
-     author, 'HDIM-Stratus', 'One line description of project.',
+     author, 'HDIM-Stratus', 'Toolkit for high-dimensions linear regression using the LASSO.',
      'Miscellaneous'),
 ]
 
