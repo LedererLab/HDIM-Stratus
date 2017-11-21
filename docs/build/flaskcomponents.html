@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data formatters &mdash; HDIM-Stratus 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HDIM-Stratus 0.1.0 documentation" href="index.html" />
+    <link rel="prev" title="Composite Regression" href="compositeregression.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="compositeregression.html" title="Composite Regression"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HDIM-Stratus 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-data_process">
+<span id="data-formatters"></span><h1>Data formatters<a class="headerlink" href="#module-data_process" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="data_process.formatForD3">
+<code class="descclassname">data_process.</code><code class="descname">formatForD3</code><span class="sig-paren">(</span><em>pandas_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data_process.html#formatForD3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_process.formatForD3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-format JSON regression results to be more friendly to D3.js,
+the plotting library used by the web front-end.</p>
+<p>JSON output from pandas is &#8216;dict-like&#8217;, that is regression coefficients and
+values are stored as key-val pairs in a dictionary.</p>
+<p>There is no particulary convenient way to handle this type of data using
+D3.js, which works best with an array of two-element dictionaries where
+one key in the dictionary is the element &#8216;Name&#8217; and the other key
+is the element &#8216;Value&#8217;.</p>
+<p>As an example this function would take the pandas formatted JSON object
+{0: {Intercept: 20.8178307102, rm: 4.2452889618, lstat: -0.5213794328}}</p>
+<p>and return</p>
+<p>[{Name: &#8220;lstat&#8221;, Val: -0.5213794328}, {Name: &#8220;Intercept&#8221;, Val: 20.8178307102},{Name: &#8220;lstat&#8221;, Val: -0.5213794328}]</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>pandas_json: JSON object output from pandas.DataFrame.to_json(orient=&#8217;columns&#8217;)</dd>
+<dt>Returns:</dt>
+<dd>Reformatted JSON object.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hdim_app">
+<span id="base-flask-app"></span><h1>Base Flask App<a class="headerlink" href="#module-hdim_app" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="hdim_app.allowed_file">
+<code class="descclassname">hdim_app.</code><code class="descname">allowed_file</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hdim_app.html#allowed_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hdim_app.allowed_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine wether a given file has an allowable file type.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>filename: Name of the file ( data.csv for example ).</dd>
+<dt>Returns:</dt>
+<dd>False if filename has an extension not listed the app config. variable
+&#8220;ALLOWED_EXTENSIONS&#8221;, True otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="hdim_app.index">
+<code class="descclassname">hdim_app.</code><code class="descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hdim_app.html#index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hdim_app.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the root HTML file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hdim_app.regress">
+<code class="descclassname">hdim_app.</code><code class="descname">regress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hdim_app.html#regress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hdim_app.regress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an L1 regularized ( ie LASSO ) regression on a data set.</p>
+<p>Args:</p>
+<blockquote>
+<div><p>Data will be passed from a client (website, cURL, Excel App etc ) via an HTTP POST request.</p>
+<p>The POST request form-data should specify the design matrix,
+the vector of predictors and any header information.</p>
+<dl class="docutils">
+<dt>The request MUST also contain the following fields in addition to the form data:</dt>
+<dd>regression_type: specifices the regression method to use
+data_type: specifies what format the data is in
+regression_index: the index of the column containing the vector of predictors</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p>A JSON object containing the result of the regression, including Intercept term.</p>
+<p>This object will be an array of two-element dictionaries. The dictionaries
+define the individual regression coefficients and
+are formatted as follows: {Name:&#8221;coefficient_name&#8221;, Val: coefficient_val}.</p>
+<p>An example response showing two coefficients and an intercept term is shown below.
+[{Name: &#8220;rm&#8221;, Val: 4.2}, {Name: &#8220;Intercept&#8221;, Val: 20.8},{Name: &#8220;lstat&#8221;, Val: -0.5}]</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="compositeregression.html"
+                        title="previous chapter">Composite Regression</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="compositeregression.html" title="Composite Regression"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HDIM-Stratus 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, Benjamin J Phillips &amp; Saba Noorassa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

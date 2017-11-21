@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FOS &mdash; HDIM-Stratus 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HDIM-Stratus 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="Composite Regression" href="compositeregression.html" />
+    <link rel="prev" title="glmnet CV" href="glmnetcv.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="compositeregression.html" title="Composite Regression"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="glmnetcv.html" title="glmnet CV"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HDIM-Stratus 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-fos_regression">
+<span id="fos"></span><h1>FOS<a class="headerlink" href="#module-fos_regression" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="fos_regression.csvFOS">
+<em class="property">class </em><code class="descclassname">fos_regression.</code><code class="descname">csvFOS</code><a class="reference internal" href="_modules/fos_regression.html#csvFOS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fos_regression.csvFOS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Functor that handles FOS regression for data supplied as a raw .csv
+( Comma Seperated Value ) file.</p>
+<dl class="method">
+<dt id="fos_regression.csvFOS.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>file_contents</em>, <em>regression_var</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fos_regression.html#csvFOS.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fos_regression.csvFOS.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the regression and return the results.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>file_contents: The raw contents of an HTTP POST request where form-data
+corresponds to a .csv file containing the design matrix, vector of predictors
+and any headers.
+regression_var: Index of the column that contains the vector
+of predictors.</dd>
+<dt>Returns:</dt>
+<dd>A pandas.DataFrame containing the regression coefficients corresponding
+to the support ( that is non-zero and signigiant coefficients ) along
+with the intercept term.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fos_regression.jsonFOS">
+<em class="property">class </em><code class="descclassname">fos_regression.</code><code class="descname">jsonFOS</code><a class="reference internal" href="_modules/fos_regression.html#jsonFOS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fos_regression.jsonFOS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Functor that handles FOS regression for data supplied as a JSON string.</p>
+<dl class="method">
+<dt id="fos_regression.jsonFOS.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>json_blob</em>, <em>regression_var</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fos_regression.html#jsonFOS.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fos_regression.jsonFOS.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the regression and return the results.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>file_contents: The raw contents of an HTTP POST request where form-data
+corresponds to a JSON string containing the design matrix, vector of predictors
+and any headers.
+regression_var: Index of the column that contains the vector
+of predictors.</dd>
+<dt>Returns:</dt>
+<dd>A pandas.DataFrame containing the regression coefficients corresponding
+to the support ( that is non-zero and signigiant coefficients ) along
+with the intercept term.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fos_regression.multiFOS">
+<em class="property">class </em><code class="descclassname">fos_regression.</code><code class="descname">multiFOS</code><a class="reference internal" href="_modules/fos_regression.html#multiFOS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fos_regression.multiFOS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class that handles some of data preparation for FOS regressions.</p>
+<p>This class is not responsible for processing raw POST request form-data.
+It is assumed that the data has already been converted into a pandas DataFrame.</p>
+<dl class="attribute">
+<dt id="fos_regression.multiFOS.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#fos_regression.multiFOS.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fos_regression.xlsxFOS">
+<em class="property">class </em><code class="descclassname">fos_regression.</code><code class="descname">xlsxFOS</code><a class="reference internal" href="_modules/fos_regression.html#xlsxFOS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fos_regression.xlsxFOS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Functor that handles FOS regression for data supplied as a raw .xlsx
+( Excel ) file.</p>
+<dl class="method">
+<dt id="fos_regression.xlsxFOS.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>file_contents</em>, <em>regression_var</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fos_regression.html#xlsxFOS.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fos_regression.xlsxFOS.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the regression and return the results.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>file_contents: The raw contents of an HTTP POST request where form-data
+corresponds to a .xlsx file containing the design matrix, vector of predictors
+and any headers.
+regression_var: Index of the column that contains the vector
+of predictors.</dd>
+<dt>Returns:</dt>
+<dd>A pandas.DataFrame containing the regression coefficients corresponding
+to the support ( that is non-zero and signigiant coefficients ) along
+with the intercept term.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="glmnetcv.html"
+                        title="previous chapter">glmnet CV</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="compositeregression.html"
+                        title="next chapter">Composite Regression</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="compositeregression.html" title="Composite Regression"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="glmnetcv.html" title="glmnet CV"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HDIM-Stratus 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, Benjamin J Phillips &amp; Saba Noorassa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

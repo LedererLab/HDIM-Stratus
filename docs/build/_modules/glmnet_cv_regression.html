@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>glmnet_cv_regression &mdash; HDIM-Stratus 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="HDIM-Stratus 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">HDIM-Stratus 0.1.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for glmnet_cv_regression</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">importlib.util</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">glmnet_py</span>
+
+<div class="viewcode-block" id="multiCV"><a class="viewcode-back" href="../glmnetcv.html#glmnet_cv_regression.multiCV">[docs]</a><span class="k">class</span> <span class="nc">multiCV</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Base class that handles some of data preparation for regressions performed</span>
+<span class="sd">    via cross-validated glmnet.</span>
+
+<span class="sd">    This class is not responsible for processing raw POST request form-data.</span>
+<span class="sd">    It is assumed that the data has already been converted into a pandas DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_process</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">,</span> <span class="n">regression_var</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Take in pre-processed data, run a regression via cross-validated glmnet</span>
+<span class="sd">         and return the results.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raw_data: A pandas.DataFrame that contains both the design matrix and</span>
+<span class="sd">            vector of predictors along with any labels.</span>
+<span class="sd">            regression_var: Index of the column in raw_data that contains the vector</span>
+<span class="sd">            of predictors.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A pandas.DataFrame containing the regression coefficients corresponding</span>
+<span class="sd">            to the support ( that is non-zero and signigiant coefficients ) along</span>
+<span class="sd">            with the intercept term.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">reg_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">regression_var</span> <span class="p">)</span>
+
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:,</span><span class="n">reg_idx</span><span class="p">]</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:,</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">reg_idx</span><span class="p">]</span> <span class="p">]</span>
+
+        <span class="n">col_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span> <span class="p">)</span>
+
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="n">fit</span> <span class="o">=</span> <span class="n">glmnet_py</span><span class="o">.</span><span class="n">cvglmnet</span><span class="p">(</span> <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="p">)</span>
+
+        <span class="n">coefficients</span> <span class="o">=</span> <span class="n">glmnet_py</span><span class="o">.</span><span class="n">cvglmnetCoef</span><span class="p">(</span> <span class="n">fit</span> <span class="p">)</span>
+
+        <span class="n">nz_indices</span> <span class="o">=</span> <span class="n">coefficients</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">support_coefs</span> <span class="o">=</span> <span class="n">coefficients</span><span class="p">[</span> <span class="n">nz_indices</span> <span class="p">]</span>
+
+        <span class="c1"># cvglmnetCoef places the intercept term in the first position of the</span>
+        <span class="c1"># coefficients vector -- need to manually add Intercept name to  vector of column names</span>
+        <span class="n">col_names</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Intercept&quot;</span> <span class="p">)</span>
+
+        <span class="n">col_names</span> <span class="o">=</span> <span class="p">[</span> <span class="n">col_names</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">nz_indices</span> <span class="p">]</span>
+
+        <span class="k">return</span><span class="p">(</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">data</span> <span class="o">=</span> <span class="n">support_coefs</span> <span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">col_names</span> <span class="p">)</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span> <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="csvCV"><a class="viewcode-back" href="../glmnetcv.html#glmnet_cv_regression.csvCV">[docs]</a><span class="k">class</span> <span class="nc">csvCV</span><span class="p">(</span> <span class="n">multiCV</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Functor that handles cross-validated glmnet regression for data supplied as a raw .csv</span>
+<span class="sd">    ( Comma Seperated Value ) file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="csvCV.__call__"><a class="viewcode-back" href="../glmnetcv.html#glmnet_cv_regression.csvCV.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">,</span> <span class="n">regression_var</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Run the regression and return the results.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_contents: The raw contents of an HTTP POST request where form-data</span>
+<span class="sd">            corresponds to a .csv file containing the design matrix, vector of predictors</span>
+<span class="sd">            and any headers.</span>
+<span class="sd">            regression_var: Index of the column that contains the vector</span>
+<span class="sd">            of predictors.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A pandas.DataFrame containing the regression coefficients corresponding</span>
+<span class="sd">            to the support ( that is non-zero and signigiant coefficients ) along</span>
+<span class="sd">            with the intercept term.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">__load</span><span class="p">(</span> <span class="n">file_contents</span> <span class="p">),</span> <span class="n">regression_var</span> <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__load</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">raw_content</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Dump form-data from an HTTP POST request into a pandas.DataFrame.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raw_content: Raw form-data from an HTTP POST request where the data</span>
+<span class="sd">            corresponds to a .csv formatted file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame containing the contents of the originally .csv file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span><span class="p">(</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span> <span class="n">BytesIO</span><span class="p">(</span> <span class="n">raw_content</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="xlsxCV"><a class="viewcode-back" href="../glmnetcv.html#glmnet_cv_regression.xlsxCV">[docs]</a><span class="k">class</span> <span class="nc">xlsxCV</span><span class="p">(</span> <span class="n">multiCV</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Functor that handles cross-validated glmnet regression for data supplied as a raw .xlsx</span>
+<span class="sd">        ( Excel ) file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="xlsxCV.__call__"><a class="viewcode-back" href="../glmnetcv.html#glmnet_cv_regression.xlsxCV.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">,</span> <span class="n">regression_var</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Run the regression and return the results.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_contents: The raw contents of an HTTP POST request where form-data</span>
+<span class="sd">            corresponds to a .xlsx file containing the design matrix, vector of predictors</span>
+<span class="sd">            and any headers.</span>
+<span class="sd">            regression_var: Index of the column that contains the vector</span>
+<span class="sd">            of predictors.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A pandas.DataFrame containing the regression coefficients corresponding</span>
+<span class="sd">            to the support ( that is non-zero and signigiant coefficients ) along</span>
+<span class="sd">            with the intercept term.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">__load</span><span class="p">(</span> <span class="n">file_contents</span> <span class="p">),</span> <span class="n">regression_var</span> <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__load</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">raw_content</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Dump form-data from an HTTP POST request into a pandas.DataFrame.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raw_content: Raw form-data from an HTTP POST request where the data</span>
+<span class="sd">            corresponds to a .xlsx formatted file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame containing the contents of the original .xlsx file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span><span class="p">(</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span> <span class="n">BytesIO</span><span class="p">(</span> <span class="n">raw_content</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="jsonCV"><a class="viewcode-back" href="../glmnetcv.html#glmnet_cv_regression.jsonCV">[docs]</a><span class="k">class</span> <span class="nc">jsonCV</span><span class="p">(</span> <span class="n">multiCV</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Functor that handles cross-validated glmnet regression for data supplied as a JSON string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="jsonCV.__call__"><a class="viewcode-back" href="../glmnetcv.html#glmnet_cv_regression.jsonCV.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">json_blob</span><span class="p">,</span> <span class="n">regression_var</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Run the regression and return the results.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_contents: The raw contents of an HTTP POST request where form-data</span>
+<span class="sd">            corresponds to a JSON string containing the design matrix, vector of predictors</span>
+<span class="sd">            and any headers.</span>
+<span class="sd">            regression_var: Index of the column that contains the vector</span>
+<span class="sd">            of predictors.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A pandas.DataFrame containing the regression coefficients corresponding</span>
+<span class="sd">            to the support ( that is non-zero and signigiant coefficients ) along</span>
+<span class="sd">            with the intercept term.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">__load</span><span class="p">(</span> <span class="n">json_blob</span> <span class="p">),</span> <span class="n">regression_var</span> <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__load</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">json_blob</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Dump contents of JSON string into a pandas.DataFrame.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raw_content: Raw form-data from an HTTP POST request where the data</span>
+<span class="sd">            corresponds to a JSON string.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame containing the contents of the original JSON string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span> <span class="n">json_blob</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;split&#39;</span> <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">HDIM-Stratus 0.1.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, Benjamin J Phillips &amp; Saba Noorassa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>
