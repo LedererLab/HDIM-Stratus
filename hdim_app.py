@@ -51,8 +51,11 @@ def regress():
         the vector of predictors and any header information.
 
         The request MUST also contain the following fields in addition to the form data:
-            regression_type: specifices the regression method to use
-            data_type: specifies what format the data is in
+            regression_type: specifices the regression method to use, must be one of "fos", "av", or "cv"
+            data_type: optional param. specifies what format the data is in, only options are to leave it blank
+                in which case a file is expected or to set to "json" in which case the "data" param will be read
+            data: only expected when data_type="json". contains the serialized data upon which the regression will
+                be run. must be in the format {"row 1":{"col 1":"a","col 2":"b"},"row 2":{"col 1":"c","col 2":"d"}}
             regression_index: the index of the column containing the vector of predictors
 
     Returns:
